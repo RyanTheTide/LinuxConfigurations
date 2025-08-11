@@ -17,7 +17,7 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-# Intro & Display current configuration
+# Intro & Confirm Current Configuration
 clear
 echo "Welcome to the Arch Linux Installer by RyanTheTide!"
 cat <<EOF
@@ -70,7 +70,7 @@ REMAIN_SIZE=$((DISK_SIZE_MIB - REMAIN_START))
 HALF_SIZE=$((REMAIN_SIZE / 2))
 WIN_END=$((REMAIN_START + HALF_SIZE))
 # -------------------------------------------
-# Confirm final configuration
+# Confirm Final Configuration
 clear
 cat <<EOF
 Current Configuration:
@@ -104,7 +104,6 @@ parted -s "${DEVICE}" mkpart primary btrfs ${WIN_END}MiB 100%
 parted -s "${DEVICE}" set 1 esp on
 parted -s "${DEVICE}" set 2 msftres on
 parted -s "${DEVICE}" set 3 msftdata on
-sleep 2
 # Format the partitions
 echo "Formatting partitions..."
 partprobe "${DEVICE}"
@@ -112,6 +111,8 @@ if [[ ! -b "${DEVICE}p1" ]] || [[ ! -b "${DEVICE}p4" ]]; then
     echo "Partitions not found! Exiting."
     exit 1
 fi
+udevadm settle
+sleep 2
 mkfs.fat -F 32 "${DEVICE}p1"
 mkfs.btrfs -f "${DEVICE}p4"
 echo "Partitions formatted!"
