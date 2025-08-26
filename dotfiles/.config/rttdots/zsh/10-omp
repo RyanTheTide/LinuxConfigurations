@@ -2,4 +2,4 @@
 # Set Oh My Posh as ZSH theme engine
 
 export PATH=$PATH:$HOME/.local/bin
-eval "$(oh-my-posh init zsh --config $HOME/.config/oh-my-posh/config.json)"
+eval "$(oh-my-posh init zsh --config $HOME/.config/rttdots/ohmyposh/config.json)"
