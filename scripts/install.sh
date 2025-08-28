@@ -69,6 +69,11 @@ while true; do
             ;;
     esac
 done
+if [[ "$TDISK" =~ nvme ]]; then
+    PART="${TDISK}p"
+else
+    PART="${TDISK}"
+fi
 echo
 read -r -p "Enter hostname (e.g. ArchLinux): " HOSTNAME
 echo
@@ -159,19 +164,19 @@ echo -e "Formatting partitions...\n"
 partprobe "${TDISK}" > /dev/null 2>&1
 udevadm settle > /dev/null 2>&1
 sleep 2 > /dev/null 2>&1
-if [[ ! -b "${TDISK}p1" ]] || [[ ! -b "${TDISK}p4" ]]; then
+if [[ ! -b "${PART}1" ]] || [[ ! -b "${PART}4" ]]; then
     echo "Partitions not found! Exiting."
     exit 1
 fi
-mkfs.fat -F 32 "${TDISK}p1" > /dev/null 2>&1
-mkfs.ntfs -f "${TDISK}p3" > /dev/null 2>&1
-mkfs.btrfs -f "${TDISK}p4" > /dev/null 2>&1
+mkfs.fat -F 32 "${PART}1" > /dev/null 2>&1
+mkfs.ntfs -f "${PART}3" > /dev/null 2>&1
+mkfs.btrfs -f "${PART}4" > /dev/null 2>&1
 echo -e "Finished creating filesystems!\n"
 # Get PARTUUID
-ROOTPARTUUID=$(blkid -s PARTUUID -o value "${TDISK}"p4)
+ROOTPARTUUID=$(blkid -s PARTUUID -o value "${PART}4")
 # Create Btrfs subvolumes
 echo -e "Creating & mounting Btrfs subvolumes...\n"
-mount "${TDISK}p4" /mnt > /dev/null 2>&1
+mount "${PART}4" /mnt > /dev/null 2>&1
 btrfs subvolume create /mnt/@ > /dev/null 2>&1
 btrfs subvolume create /mnt/@home > /dev/null 2>&1
 btrfs subvolume create /mnt/@snapshots > /dev/null 2>&1
@@ -179,19 +184,19 @@ btrfs subvolume create /mnt/@cache > /dev/null 2>&1
 btrfs subvolume create /mnt/@log > /dev/null 2>&1
 umount /mnt > /dev/null 2>&1
 # Mount Btrfs subvolumes with compression
-mount -o compress=zstd:1,subvol=@ "${TDISK}p4" /mnt > /dev/null 2>&1
+mount -o compress=zstd:1,subvol=@ "${PART}4" /mnt > /dev/null 2>&1
 mkdir -p /mnt/home > /dev/null 2>&1
 mkdir -p /mnt/.snapshots > /dev/null 2>&1
 mkdir -p /mnt/var/cache > /dev/null 2>&1
 mkdir -p /mnt/var/log > /dev/null 2>&1
-mount -o compress=zstd:1,subvol=@home "${TDISK}p4" /mnt/home > /dev/null 2>&1
-mount -o compress=zstd:1,subvol=@snapshots "${TDISK}p4" /mnt/.snapshots > /dev/null 2>&1
-mount -o compress=zstd:1,subvol=@cache "${TDISK}p4" /mnt/var/cache > /dev/null 2>&1
-mount -o compress=zstd:1,subvol=@log "${TDISK}p4" /mnt/var/log > /dev/null 2>&1
+mount -o compress=zstd:1,subvol=@home "${PART}4" /mnt/home > /dev/null 2>&1
+mount -o compress=zstd:1,subvol=@snapshots "${PART}4" /mnt/.snapshots > /dev/null 2>&1
+mount -o compress=zstd:1,subvol=@cache "${PART}4" /mnt/var/cache > /dev/null 2>&1
+mount -o compress=zstd:1,subvol=@log "${PART}4" /mnt/var/log > /dev/null 2>&1
 # Create & mount EFI partition
 echo -e "Creating & mounting EFI volume...\n"
 mkdir -p /mnt/efi
-mount "${TDISK}p1" /mnt/efi
+mount "${PART}1" /mnt/efi
 echo -e "All volumes initialized!\n"
 # ------------------------------------------------------------------------------------------/
 # -------------------------------------------------- Packages -------------------------------------------------------\
