@@ -56,6 +56,11 @@ if [[ ! -b "$TDISK" ]]; then
     echo "Error: Device $TDISK does not exist!"
     exit 1
 fi
+if [[ "$TDISK" =~ nvme ]]; then
+    PART="${TDISK}p"
+else
+    PART="${TDISK}"
+fi
 clear
 # Input system configuration
 while true; do
@@ -69,11 +74,6 @@ while true; do
             ;;
     esac
 done
-if [[ "$TDISK" =~ nvme ]]; then
-    PART="${TDISK}p"
-else
-    PART="${TDISK}"
-fi
 echo
 read -r -p "Enter hostname (e.g. ArchLinux): " HOSTNAME
 echo
@@ -153,12 +153,16 @@ fi
 echo -e "\nCreating partitions...\n"
 parted -s "${TDISK}" mklabel gpt
 parted -s "${TDISK}" mkpart primary fat32 1MiB ${EFIEND}MiB
-parted -s "${TDISK}" mkpart primary ${EFIEND}MiB ${MSREND}MiB
-parted -s "${TDISK}" mkpart primary ntfs ${MSREND}MiB ${WINEND}MiB
-parted -s "${TDISK}" mkpart primary btrfs ${WINEND}MiB 100%
 parted -s "${TDISK}" set 1 esp on
+parted -s "${TDISK}" name 1 "EFI"
+parted -s "${TDISK}" mkpart primary ${EFIEND}MiB ${MSREND}MiB
 parted -s "${TDISK}" set 2 msftres on
+parted -s "${TDISK}" name 2 "MSR"
+parted -s "${TDISK}" mkpart primary ntfs ${MSREND}MiB ${WINEND}MiB
 parted -s "${TDISK}" set 3 msftdata on
+parted -s "${TDISK}" name 3 "Windows"
+parted -s "${TDISK}" mkpart primary btrfs ${WINEND}MiB 100%
+parted -s "${TDISK}" name 4 "Arch"
 # Format the partitions
 echo -e "Formatting partitions...\n"
 partprobe "${TDISK}" > /dev/null 2>&1
