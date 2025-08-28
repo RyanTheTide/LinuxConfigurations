@@ -258,7 +258,7 @@ set -euo pipefail
 cd "/var/tmp"
 git clone https://github.com/RyanTheTide/LinuxConfigurations.git
 cd LinuxConfigurations
-cp -r dotfiles/* "$HOME"
+cp -r dotfiles/. "$HOME"
 history -c
 EOL
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------/
