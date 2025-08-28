@@ -22,7 +22,7 @@ The packages installed are as follows:
 
 Please note, this script is heavily personal and as such hardcodes the region, locale (and additionally the en-US one), keymap, dual-boot percentage and other things. Please edit these either by cloning or downloading before blindly running. If you don't and are not Australian and within Sydney, expect to see spiders, snakes, kangaroos and dropbears. **Don't blindly run scripts without rtfm and checking the code yourself**.
 
-** Known Issues
+## Known Issues
 * When running the Arch Installer script in a Virtual Machine the rEFInd resolution defaults to the highest possible resolution for the virtual display adapter. To fix this change the refind.conf resolution value to something like `resolution 1280 720` or `resolution 1920 1080`.
 
 ## Planned Improvements to Arch Installer Script.
