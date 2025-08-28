@@ -253,12 +253,12 @@ mv "$HOME/.zshrc" "$HOME/.zshrc.bak" > /dev/null 2>&1
 EOL
 # Setup Dotfiles
 echo -e "Configuring Shell...\n"
-arch-chroot /mnt su - "${USERNAME}" -s /bin/bash <<EOL
+arch-chroot /mnt su - "${USERNAME}" -s /bin/bash <<'EOL'
 set -euo pipefail
 cd "/var/tmp"
 git clone https://github.com/RyanTheTide/LinuxConfigurations.git
 cd LinuxConfigurations
-cp -r dotfiles/ $HOME
+cp -r dotfiles/ "$HOME"
 history -c
 EOL
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------/
