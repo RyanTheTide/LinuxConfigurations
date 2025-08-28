@@ -255,11 +255,11 @@ EOL
 echo -e "Configuring Shell...\n"
 arch-chroot /mnt su - "${USERNAME}" -s /bin/bash <<'EOL'
 set -euo pipefail
-cd "/var/tmp"
-git clone https://github.com/RyanTheTide/LinuxConfigurations.git
-cd LinuxConfigurations
-cp -r dotfiles/. "$HOME"
-history -c
+cd "/var/tmp" > /dev/null 2>&1
+git clone https://github.com/RyanTheTide/LinuxConfigurations.git > /dev/null 2>&1
+cd LinuxConfigurations > /dev/null 2>&1
+cp -r dotfiles/. "$HOME" > /dev/null 2>&1
+history -c > /dev/null 2>&1
 EOL
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------/
 # ----------------- Enable Services -------------\
