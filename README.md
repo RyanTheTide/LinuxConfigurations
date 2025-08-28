@@ -13,14 +13,19 @@ LinuxConfigurations/
 ```
 
 ## Features
-* Pre-configured dotfiles for shell (Zsh), terminal prompts, and other tools.
-* Automated setup scripts for Arch Linux, including:
-* Disk partitioning and filesystem layout.
-* rEFInd boot manager configuration.
-* System defaults (locales, keymaps, etc.).
-* rEFInd themes for a clean multi-boot experience.
+* Pre-configured dotfiles for shell, includes:
+  * Oh My Posh theme for beautiful terminal usage.
+  * Custom commands.
+  * Simplified Zsh run commands file.
+* rEFInd themes for clean boot experience, includes:
+  * RoundDark theme.
+* Automated setup script for Arch Linux, including:
+  * Disk partitioning and filesystem layout. With a focus on dual-booting Windows.
+  * rEFInd boot manager. With aformentioned theme.
+  * Zsh shell environment including Oh My Zsh & Oh My Posh. With aformentioned theme.
+  * System defaults (locales, keymaps, etc.). Note these are **hardcoded to Australia**, edit as necessary.
 
 ## Notes
 * These configurations are opinionated and tailored for my systems.
 * You may need to adjust scripts or configs for your hardware (e.g. timezone, locales, etc).
-vBack up your data before running any installation scripts — they will completely wipe the target disk.
+* Back up your data before running any installation scripts — they will completely wipe the target disk.
