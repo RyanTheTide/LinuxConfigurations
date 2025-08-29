@@ -1,5 +1,17 @@
-theme: minima
+remote_theme: "jekyll/minima@1e8a445"
 title: RTTDev
 description: RyanTheTide's Linux Configurations
+plugins:
+ - jekyll-feed
+ - jekyll-seo-tag
 minima:
   skin: solarized-dark
+  social_links:
+    - title: Personal GitHub
+      icon: github
+      url: "https://github.com/RyanTheTide"
+    - title: Personal X
+      icon: x-twitter
+      url: "https://x.com/RyanTheTide"
+  nav_pages:
+    - /scripts/install.sh
