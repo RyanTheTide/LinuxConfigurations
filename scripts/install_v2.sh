@@ -18,8 +18,8 @@ trap 'die "Script aborted (line $LINENO)."' ERR
 ######################################################################
 # Note: These are opinionated defaults; adjust as needed.
 TIMEZONE="Australia/Sydney"
-MLOCALE="en_AU.UTF-8"
-SLOCALE="en_US.UTF-8"
+MLOCALE="en_AU.UTF-8 UTF-8 "
+SLOCALE="en_US.UTF-8 UTF-8"
 KEYMAP="us"
 
 # Derived
@@ -27,9 +27,6 @@ COUNTRY="${TIMEZONE%%/*}"
 
 # Feature toggles (can be set via CLI args)
 DISABLE_WINDOWS=0   # when 1, no Windows/MSR partitions will be created
-
-MLOCALE="en_AU.UTF-8"
-SLOCALE="en_US.UTF-8"
 
 # User-supplied at runtime
 TDISK=""         # e.g. /dev/nvme0n1
@@ -60,10 +57,10 @@ require_root() {
 }
 
 parse_args() {
-	# Accept args like: nowin | --no-windows
+	# Accept args like: nowindows | nowin | --no-windows
 	for arg in "$@"; do
 		case "$arg" in
-			nowin|--no-windows)
+			nowindows|nowin|--no-windows)
 				DISABLE_WINDOWS=1
 				;;
 		esac
@@ -104,21 +101,18 @@ prompt_system_config() {
 	read -r -s -p "Enter user password (e.g. secretpassword): " USERPASS; echo
 	echo
 	read -r -p "Enter full name (e.g. Ryan Murray): " USERFULLNAME
-}
-
-prompt_locale() {
 	echo
 	read -r -p "Are you within the USA? (yes/no): " INUSA
 	case "${INUSA}" in
 		y|Y|yes|YES)
-			MLOCALE="en_US.UTF-8"
+			MLOCALE="en_US.UTF-8 UTF-8"
 			SLOCALE=""
 			;;
 		*)
 			read -r -p "Enter your main locale (e.g. en_AU): " INPUT_LOCALE
 			INPUT_LOCALE="${INPUT_LOCALE%.UTF-8}"
-			MLOCALE="${INPUT_LOCALE}.UTF-8"
-			SLOCALE="en_US.UTF-8"
+			MLOCALE="${INPUT_LOCALE}.UTF-8 UTF-8"
+			SLOCALE="en_US.UTF-8 UTF-8"
 			;;
 	esac
 }
@@ -249,10 +243,10 @@ generate_system_files() {
 ::1         localhost
 127.0.1.1   ${HOSTNAME}.localdomain ${HOSTNAME}
 EOF
-		echo "${MLOCALE} UTF-8" > /mnt/etc/locale.gen
-		if [[ -n "${SLOCALE}" && "${SLOCALE}" != "${MLOCALE}" ]]; then
-			echo "${SLOCALE} UTF-8" >> /mnt/etc/locale.gen
-		fi
+	echo "${MLOCALE}" > /mnt/etc/locale.gen
+	if [[ -n "${SLOCALE}" && "${SLOCALE}" != "${MLOCALE}" ]]; then
+		echo "${SLOCALE}" >> /mnt/etc/locale.gen
+	fi
 	echo LANG=${MLOCALE} > /mnt/etc/locale.conf
 	arch-chroot /mnt locale-gen > /dev/null 2>&1
 	echo KEYMAP=${KEYMAP} > /mnt/etc/vconsole.conf
@@ -266,10 +260,10 @@ install_additional_packages() {
 		base-devel \
 		btrfs-progs \
 		efibootmgr refind \
-			# Accept args like: nowindows | nowin | --no-windows
+		networkmanager \
 		bluez \
 		mesa \
-					nowindows|nowin|--no-windows)
+		nano \
 		sudo \
 		zsh zsh-completions zsh-autosuggestions zsh-syntax-highlighting \
 		git unzip \
@@ -295,28 +289,13 @@ setup_users() {
 
 setup_shell_and_theme() {
 	log "Setting up Shell (Oh My Zsh & Oh My Posh)..."
-
-			# Locale prompt (inlined)
-			echo
-			read -r -p "Are you within the USA? (yes/no): " INUSA
-			case "${INUSA}" in
-				y|Y|yes|YES)
-					MLOCALE="en_US.UTF-8"
-					SLOCALE=""
-					;;
-				*)
-					read -r -p "Enter your main locale (e.g. en_AU): " INPUT_LOCALE
-					INPUT_LOCALE="${INPUT_LOCALE%.UTF-8}"
-					MLOCALE="${INPUT_LOCALE}.UTF-8"
-					SLOCALE="en_US.UTF-8"
-					;;
-			esac
 	arch-chroot /mnt su - "${USERNAME}" -s /bin/bash <<'EOL'
 set -euo pipefail
 touch "$HOME/.zshrc" > /dev/null 2>&1
 curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh | bash -s -- --unattended > /dev/null 2>&1
 curl -s https://ohmyposh.dev/install.sh | bash -s > /dev/null 2>&1
 "$HOME/.local/bin/oh-my-posh" font install meslo > /dev/null 2>&1 || true
+mv "$HOME/.zshrc" "$HOME/.zshrc.bak" > /dev/null 2>&1 || true
 EOL
 }
 
@@ -370,7 +349,6 @@ main() {
 	parse_args "$@"
 	select_disk
 	prompt_system_config
-	prompt_locale
 	compute_partition_layout
 	confirm_summary
 
