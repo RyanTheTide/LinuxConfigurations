@@ -1,8 +1,9 @@
+# LinuxConfigurations
+## Intro
 A collection of my personal Linux configurations, scripts, and dotfiles.
 This repository is primarily designed for Arch Linux installations, but many of the scripts and configuration files can be adapted to other distributions.
 
 ## Repository Structure
-
 ```
 LinuxConfigurations/
 ├── dotfiles/     # User configuration files (.zshrc, .config/, etc.)
