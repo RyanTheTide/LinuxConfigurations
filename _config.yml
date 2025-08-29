@@ -1,20 +1,20 @@
-remote_theme: "jekyll/minima@1e8a445"
-title: RTTDev
-description: >
-  Hello World!
-author:
-  name: RyanTheTide
-  email: ryan@rttd.xyz
-plugins:
- - jekyll-feed
- - jekyll-seo-tag
-minima:
-  skin: solarized-dark
-  social_links:
-    - title: Personal GitHub
-      icon: github
-      url: "https://github.com/RyanTheTide"
-    - title: Personal X
-      icon: x-twitter
-      url: "https://x.com/RyanTheTide"
-  hide_site_feed_link: true
+#remote_theme: "jekyll/minima@1e8a445"
+#title: RTTDev
+#description: >
+#  Hello World!
+#author:
+#  name: RyanTheTide
+#  email: ryan@rttd.xyz
+#plugins:
+# - jekyll-feed
+# - jekyll-seo-tag
+#minima:
+#  skin: solarized-dark
+#  social_links:
+#    - title: Personal GitHub
+#      icon: github
+#      url: "https://github.com/RyanTheTide"
+#    - title: Personal X
+#      icon: x-twitter
+#      url: "https://x.com/RyanTheTide"
+#  hide_site_feed_link: true
