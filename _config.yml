@@ -1,0 +1,5 @@
+theme: minima
+title: RTTDev
+description: RyanTheTide's Linux Configurations
+minima:
+  skin: dark
