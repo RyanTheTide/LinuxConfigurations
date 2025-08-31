@@ -158,7 +158,7 @@ Current Device Configuration:
 
 Partition layout:
 	- 2GB EFI System
-$( [[ ${DISABLE_WINDOWS} -eq 1 ]] && echo "  - Entire remaining disk: Arch Linux (BTRFS)" || echo "  - 16MB Microsoft Reserved
+$( [[ ${DISABLE_WINDOWS} -eq 1 ]] && echo "   - Entire remaining disk: Arch Linux (BTRFS)" || echo "   - 16MB Microsoft Reserved
 	- ~$((HALFSIZE / 1024))GB Windows
 	- ~$((HALFSIZE / 1024))GB Arch Linux" )
 
