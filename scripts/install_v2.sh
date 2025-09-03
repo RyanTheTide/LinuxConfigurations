@@ -105,13 +105,13 @@ prompt_system_config() {
 	read -r -p "Are you within the USA? (yes/no): " INUSA
 	case "${INUSA}" in
 		y|Y|yes|YES)
-			MLOCALE="en_US.UTF-8 UTF-8"
+			MLOCALE="en_US.UTF-8"
 			SLOCALE=""
 			;;
 		*)
 			read -r -p "Enter your main locale (e.g. en_AU): " INPUT_LOCALE
-			MLOCALE="${INPUT_LOCALE}.UTF-8 UTF-8"
-			SLOCALE="en_US.UTF-8 UTF-8"
+			MLOCALE="${INPUT_LOCALE}.UTF-8"
+			SLOCALE="en_US.UTF-8"
 			;;
 	esac
 }
@@ -242,9 +242,9 @@ generate_system_files() {
 ::1         localhost
 127.0.1.1   ${HOSTNAME}.localdomain ${HOSTNAME}
 EOF
-	echo "${MLOCALE}" > /mnt/etc/locale.gen
+	echo "${MLOCALE} UTF-8" > /mnt/etc/locale.gen
 	if [[ -n "${SLOCALE}" && "${SLOCALE}" != "${MLOCALE}" ]]; then
-		echo "${SLOCALE}" >> /mnt/etc/locale.gen
+		echo "${SLOCALE} UTF-8" >> /mnt/etc/locale.gen
 	fi
 	echo LANG=${MLOCALE} > /mnt/etc/locale.conf
 	arch-chroot /mnt locale-gen > /dev/null 2>&1
