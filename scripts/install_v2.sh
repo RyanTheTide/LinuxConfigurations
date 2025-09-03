@@ -144,22 +144,22 @@ confirm_summary() {
 Confirm the following settings are correct before continuing.
 
 Current Zone Configuration:
-	Timezone             : ${TIMEZONE}
-	Main Locale          : ${MLOCALE}
-	Secondary Locale     : ${SLOCALE}
-	Keymap               : ${KEYMAP}
+    Timezone             : ${TIMEZONE}
+    Main Locale          : ${MLOCALE}
+    Secondary Locale     : ${SLOCALE}
+    Keymap               : ${KEYMAP}
 
 Current Device Configuration:
-	Disk                 : ${TDISK}
-	CPU Type             : ${CPUTYPE}
-	Hostname             : ${HOSTNAME}
-	Username             : ${USERNAME}
+    Disk                 : ${TDISK}
+    CPU Type             : ${CPUTYPE}
+    Hostname             : ${HOSTNAME}
+    Username             : ${USERNAME}
 
 Partition layout:
-	- 2GB EFI System
-$( [[ ${DISABLE_WINDOWS} -eq 1 ]] && echo "    - Entire remaining disk: Arch Linux (BTRFS)" || echo "    - 16MB Microsoft Reserved
-	- ~$((HALFSIZE / 1024))GB Windows
-	- ~$((HALFSIZE / 1024))GB Arch Linux" )
+    - 2GB EFI System
+$( [[ ${DISABLE_WINDOWS} -eq 1 ]] && \echo "    - Entire remaining disk: Arch Linux (BTRFS)" || echo "    - 16MB Microsoft Reserved
+    - ~$((HALFSIZE / 1024))GB Windows
+    - ~$((HALFSIZE / 1024))GB Arch Linux" )
 
 WARNING: This will completely wipe ${TDISK}!
 
