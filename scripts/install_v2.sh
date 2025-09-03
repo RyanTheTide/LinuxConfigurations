@@ -110,7 +110,7 @@ prompt_system_config() {
 			;;
 		*)
 			read -r -p "Enter your main locale (e.g. en_AU): " INPUT_LOCALE
-			INPUT_LOCALE=${INPUT_LOCALE%.UTF-8}
+			INPUT_LOCALE=${INPUT_LOCALE%}
 			MLOCALE="${INPUT_LOCALE}.UTF-8 UTF-8"
 			SLOCALE="en_US.UTF-8 UTF-8"
 			;;
