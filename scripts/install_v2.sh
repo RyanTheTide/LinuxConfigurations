@@ -18,8 +18,6 @@ trap 'die "Script aborted (line $LINENO)."' ERR
 ######################################################################
 # Note: These are opinionated defaults; adjust as needed.
 TIMEZONE="Australia/Sydney"
-MLOCALE="en_AU.UTF-8 UTF-8 "
-SLOCALE="en_US.UTF-8 UTF-8"
 KEYMAP="us"
 
 # Derived
@@ -29,6 +27,8 @@ COUNTRY="${TIMEZONE%%/*}"
 DISABLE_WINDOWS=0   # when 1, no Windows/MSR partitions will be created
 
 # User-supplied at runtime
+MLOCALE=""		 # e.g. en_AU.UTF-8
+SLOCALE=""		 # e.g. en_US.UTF-8
 TDISK=""         # e.g. /dev/nvme0n1
 PART=""          # e.g. /dev/nvme0n1p or /dev/sda
 CPUTYPE=""       # amd|intel
@@ -157,7 +157,7 @@ Current Device Configuration:
 
 Partition layout:
 	- 2GB EFI System
-$( [[ ${DISABLE_WINDOWS} -eq 1 ]] && echo "   - Entire remaining disk: Arch Linux (BTRFS)" || echo "   - 16MB Microsoft Reserved
+$( [[ ${DISABLE_WINDOWS} -eq 1 ]] && echo "    - Entire remaining disk: Arch Linux (BTRFS)" || echo "    - 16MB Microsoft Reserved
 	- ~$((HALFSIZE / 1024))GB Windows
 	- ~$((HALFSIZE / 1024))GB Arch Linux" )
 
