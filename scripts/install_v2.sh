@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-# Arch Linux installer (v1.1, refactor into functions)
-# Preserves behavior of install_v1.sh while organizing code for easier changes.
 
 set -euo pipefail
 
@@ -258,7 +256,7 @@ EOF
 install_cpu_ucode() {
 	if [[ $CPUMFR == "intel" || $CPUMFR == "amd" ]]; then
  		log "Installing microcode..."
- 		arch-chroot /mnt pacman -S --noconfirm "${CPUMFR}"-ucode
+ 		arch-chroot /mnt pacman -S --noconfirm "${CPUMFR}"-ucode > /dev/null 2>&1
    	else
 		warn "Skipping microcode install (unknown CPU vendor)"
   	fi
