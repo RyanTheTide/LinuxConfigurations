@@ -22,6 +22,7 @@ KEYMAP="us"
 
 # Derived
 COUNTRY="${TIMEZONE%%/*}"
+CPUMFR=""
 
 # Feature toggles (can be set via CLI args)
 DISABLE_WINDOWS=0   # when 1, no Windows/MSR partitions will be created
@@ -31,7 +32,6 @@ MLOCALE=""		 # e.g. en_AU.UTF-8
 SLOCALE=""		 # e.g. en_US.UTF-8
 TDISK=""         # e.g. /dev/nvme0n1
 PART=""          # e.g. /dev/nvme0n1p or /dev/sda
-CPUTYPE=""       # amd|intel
 HOSTNAME=""      # e.g. ArchLinux
 ROOTPASS=""      # e.g. supersecretpassword
 USERNAME=""      # e.g. ryan
@@ -82,16 +82,19 @@ select_disk() {
 	fi
 }
 
+detect_cpu_manufacturer () {
+CPUVEN=$(lscpu | awk -F: '/Vendor ID/ {gsub(/^[ \t]+/, "", $2); print $2}')
+if [[ $CPUVEN == "AuthenticAMD" ]]; then
+    CPUMFR="amd"
+elif [[ $CPUVEN == "GenuineIntel" ]]; then
+    CPUMFR="intel"
+else
+    CPUMFR="unknown"
+fi
+}
+
 prompt_system_config() {
 	clear
-	while true; do
-		read -r -p "Enter CPU type (amd/intel): " CPUTYPE
-		case "$CPUTYPE" in
-			amd|intel) break ;;
-			*) echo "Invalid input. Please type exactly 'amd' or 'intel'." ;;
-		esac
-	done
-	echo
 	read -r -p "Enter hostname (e.g. ArchLinux): " HOSTNAME
 	echo
 	read -r -s -p "Enter root password (e.g. supersecretpassword): " ROOTPASS; echo
@@ -151,7 +154,7 @@ Current Zone Configuration:
 
 Current Device Configuration:
     Disk                 : ${TDISK}
-    CPU Type             : ${CPUTYPE}
+    CPU Type             : ${CPUMFR}
     Hostname             : ${HOSTNAME}
     Username             : ${USERNAME}
 
@@ -252,10 +255,18 @@ EOF
 	arch-chroot /mnt ln -sf "/usr/share/zoneinfo/${TIMEZONE}" /etc/localtime
 }
 
+install_cpu_ucode() {
+	if [[ $CPUMFR == "intel" || $CPUMFR == "amd" ]]; then
+ 		log "Installing microcode..."
+ 		arch-chroot /mnt pacman -S --noconfirm "${CPUMFR}"-ucode
+   	else
+		warn "Skipping microcode install (unknown CPU vendor)"
+  	fi
+}
+
 install_additional_packages() {
 	log "Installing additional packages (this may take a while)..."
 	arch-chroot /mnt pacman -Sy --noconfirm \
-		"${CPUTYPE}"-ucode \
 		base-devel \
 		btrfs-progs \
 		efibootmgr refind \
@@ -325,11 +336,19 @@ install_refind() {
 	arch-chroot /mnt refind-install > /dev/null 2>&1
 	rm -f /mnt/boot/refind_linux.conf > /dev/null 2>&1 || true
 	touch /mnt/boot/refind_linux.conf
-	cat > /mnt/boot/refind_linux.conf <<EOF
-"Standard Boot"  "root=PARTUUID=${ROOTPARTUUID} rw add_efi_memmap quiet rootflags=subvol=@ initrd=@\\boot\\${CPUTYPE}-ucode.img initrd=@\\boot\\initramfs-linux.img"
-"Fallback Boot"  "root=PARTUUID=${ROOTPARTUUID} rw add_efi_memmap rootflags=subvol=@ initrd=@\\boot\\${CPUTYPE}-ucode.img initrd=@\\boot\\initramfs-linux-fallback.img"
-"Terminal Boot"  "root=PARTUUID=${ROOTPARTUUID} rw add_efi_memmap rootflags=subvol=@ initrd=@\\boot\\${CPUTYPE}-ucode.img initrd=@\\boot\\initramfs-linux.img systemd.unit=multi-user.target"
+ 	if [[ $CPUMFR == "intel" || $CPUMFR == "amd" ]]; then
+  		cat > /mnt/boot/refind_linux.conf <<EOF
+"Standard Boot"  "root=PARTUUID=${ROOTPARTUUID} rw add_efi_memmap quiet rootflags=subvol=@ initrd=@\\boot\\${CPUMFR}-ucode.img initrd=@\\boot\\initramfs-linux.img"
+"Fallback Boot"  "root=PARTUUID=${ROOTPARTUUID} rw add_efi_memmap rootflags=subvol=@ initrd=@\\boot\\${CPUMFR}-ucode.img initrd=@\\boot\\initramfs-linux-fallback.img"
+"Terminal Boot"  "root=PARTUUID=${ROOTPARTUUID} rw add_efi_memmap rootflags=subvol=@ initrd=@\\boot\\${CPUMFR}-ucode.img initrd=@\\boot\\initramfs-linux.img systemd.unit=multi-user.target"
 EOF
+	else
+		cat > /mnt/boot/refind_linux.conf <<EOF
+"Standard Boot"  "root=PARTUUID=${ROOTPARTUUID} rw add_efi_memmap quiet rootflags=subvol=@ initrd=@\\boot\\initramfs-linux.img"
+"Fallback Boot"  "root=PARTUUID=${ROOTPARTUUID} rw add_efi_memmap rootflags=subvol=@ initrd=@\\boot\\initramfs-linux-fallback.img"
+"Terminal Boot"  "root=PARTUUID=${ROOTPARTUUID} rw add_efi_memmap rootflags=subvol=@ initrd=@\\boot\\initramfs-linux.img systemd.unit=multi-user.target"
+EOF
+	fi
 	# Copy custom rEFInd configuration/theme from repo
 	mv /mnt/efi/EFI/refind/refind.conf /mnt/efi/EFI/refind/refind.conf.bak || true
 	cp -r /mnt/var/tmp/LinuxConfigurations/refind /mnt/efi/EFI/
@@ -347,6 +366,7 @@ main() {
 	require_root
 	parse_args "$@"
 	select_disk
+ 	detect_cpu_manufacturer
 	prompt_system_config
 	compute_partition_layout
 	confirm_summary
@@ -357,6 +377,7 @@ main() {
 
 	install_base_system
 	generate_system_files
+ 	install_cpu_ucode
 	install_additional_packages
 	set_mirrors
 
