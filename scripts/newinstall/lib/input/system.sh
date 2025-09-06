@@ -87,4 +87,5 @@ input_system() {
         # shellcheck disable=SC2034
         is_mirrors=0
     fi
+    is_refind=1
 }
