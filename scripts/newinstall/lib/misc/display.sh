@@ -7,27 +7,27 @@ display_configuration() {
 Current Configuration
 
 Disk Information:
-Disk: $disk
-Is SSD: $is_ssd
+Disk: ${disk}
+Is SSD: ${is_ssd}
 
 System Information:
-Main Locale: $main_locale
-Secondary Locale: $secondary_locale
-Keymap: $keymap
-Timezone: $timezone
-Country: $country
-Hostname: $hostname
+Main Locale: ${main_locale}
+Secondary Locale: ${secondary_locale}
+Keymap: ${keymap}
+Timezone: ${timezone}
+Country: ${country}
+Hostname: ${hostname}
 
 Boot Information:
-CPU Manufacturer: $cpu_manufacturer
-Dual-Boot Enabled: $no_windows
-Secure Boot Enabled: $is_secureboot
-rEFInd Enabled: $is_refind
+CPU Manufacturer: ${cpu_manufacturer}
+Dual-Boot Enabled: ${no_windows}
+Secure Boot Enabled: ${is_secureboot}
+rEFInd Enabled: ${is_refind}
 
 User Information:
-New Username: $newusername
+New Username: ${newusername}
 New User Password: (hidden)
-New User Full Name: $newuserdescription
+New User Full Name: ${newuserdescription}
 Root Password: (hidden)
 ====================================================================
 EOF
