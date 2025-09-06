@@ -1,154 +1,159 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="color-scheme" content="light dark" />
-    <meta name="theme-color" content="#6366f1" />
-    <title>Linux Configurations</title>
-    <style>
-        :root{
-            --bg-1:#0ea5e9;
-            --bg-2:#6366f1;
-            --bg-3:#a855f7;
-            --text:#f8fafc;
-            --card:rgba(2,6,23,.55);
-            --card-border:rgba(255,255,255,.15);
-            --muted:rgba(248,250,252,.85);
-        }
-        *{box-sizing:border-box}
-        html,body{height:100%}
-        body{
-            margin:0;
-            font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
-            line-height:1.5;
-            color:var(--text);
-            background:linear-gradient(135deg,var(--bg-1) 0%,var(--bg-2) 50%,var(--bg-3) 100%) fixed;
-            display:grid;
-            place-items:center;
-        }
-        .wrap{
-            width:min(1000px,94vw);
-            padding:2.25rem;
-            background:var(--card);
-            border:1px solid var(--card-border);
-            border-radius:16px;
-            backdrop-filter:blur(6px);
-            -webkit-backdrop-filter:blur(6px);
-            box-shadow:0 10px 30px rgba(2,6,23,.3);
-        }
-        h1{
-            margin:0 0 .5rem;
-            font-size:clamp(1.8rem,2.5vw + 1rem,3rem);
-            letter-spacing:.3px;
-        }
-        h2{margin:1.25rem 0 .5rem;font-size:1.35rem}
-        p{margin:0 0 1rem;max-width:80ch;font-size:1.05rem;color:var(--muted)}
-        ul{margin:.25rem 0 1rem 1.25rem}
-        code,kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace}
-        pre{margin:.5rem 0 1rem;padding:.9rem 1rem;background:rgba(2,6,23,.6);border:1px solid var(--card-border);border-radius:10px;overflow:auto}
-        .actions{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1rem}
-        .btn{
-            appearance:none;
-            border:1px solid var(--card-border);
-            background:rgba(255,255,255,.08);
-            color:var(--text);
-            padding:.6rem 1rem;
-            border-radius:10px;
-            cursor:pointer;
-            text-decoration:none;
-            transition:transform .12s ease,background .12s ease,border-color .12s ease;
-        }
-        .btn:hover,.btn:focus-visible{
-            background:rgba(255,255,255,.16);
-            border-color:rgba(255,255,255,.3);
-            transform:translateY(-1px);
-            outline:none;
-        }
-        .grid{display:grid;grid-template-columns:1fr;gap:1rem}
-        @media (min-width: 900px){.grid{grid-template-columns:1.1fr .9fr}}
-        .card{padding:1rem;border:1px solid var(--card-border);border-radius:12px;background:rgba(255,255,255,.04)}
-        .small{font-size:.95rem}
-        footer{margin-top:1.25rem;font-size:.9rem;opacity:.9}
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#6366f1" />
+  <meta name="description" content="Linux Configurations: dotfiles, rEFInd theme, and automated Arch install scripts." />
+  <title>Linux Configurations</title>
+  <style>
+    :root{
+      --bg-1:#0ea5e9;
+      --bg-2:#6366f1;
+      --bg-3:#a855f7;
+      --text:#f8fafc;
+      --card:rgba(2,6,23,.55);
+      --card-border:rgba(255,255,255,.15);
+      --muted:rgba(248,250,252,.85);
+      --focus: #fbbf24;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-size:15px;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
+      line-height:1.5;
+      color:var(--text);
+      background:linear-gradient(135deg,var(--bg-1) 0%,var(--bg-2) 50%,var(--bg-3) 100%) fixed;
+      display:block;
+      padding:32px 16px;
+      min-height:100vh;
+      overflow-y:auto;
+    }
+    .wrap{
+      width:min(1200px,92vw);
+      margin: 0 auto; /* center horizontally */
+      padding:2.25rem;
+      background:var(--card);
+      border:1px solid var(--card-border);
+      border-radius:16px;
+      backdrop-filter:blur(6px);
+      -webkit-backdrop-filter:blur(6px);
+      box-shadow:0 10px 30px rgba(2,6,23,.3);
+    }
+    h1{margin:0 0 .5rem;font-size:clamp(1.6rem,2vw + 1rem,2.5rem);letter-spacing:.3px}
+    h2{margin:1.25rem 0 .5rem;font-size:1.35rem}
+    p{margin:0 0 1rem;max-width:80ch;font-size:.98rem;color:var(--muted)}
+    ul{margin:.25rem 0 1rem 1.25rem}
+    li{margin:.15rem 0}
+    code,kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace}
+    pre{margin:.5rem 0 1rem;padding:.9rem 1rem;background:rgba(2,6,23,.6);border:1px solid var(--card-border);border-radius:10px;overflow:auto}
+    .actions{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1rem}
+    .btn{
+      appearance:none;
+      border:1px solid var(--card-border);
+      background:rgba(255,255,255,.08);
+      color:var(--text);
+      padding:.6rem 1rem;
+      border-radius:10px;
+      cursor:pointer;
+      text-decoration:none;
+      transition:transform .12s ease,background .12s ease,border-color .12s ease, box-shadow .12s ease;
+    }
+    .btn:hover{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.3);transform:translateY(-1px)}
+    .btn:focus-visible{outline:2px solid var(--focus);outline-offset:3px;box-shadow:0 0 0 4px rgba(251,191,36,.25)}
+    .grid{display:grid;grid-template-columns:1fr;gap:1rem;align-items:start}
+    @media (min-width: 900px){.grid{grid-template-columns:1fr 1fr}}
+    .card{padding:1rem;border:1px solid var(--card-border);border-radius:12px;background:rgba(255,255,255,.04)}
+    .small{font-size:.95rem}
+    details{background:rgba(255,255,255,.03);border:1px solid var(--card-border);border-radius:10px;padding:.6rem .8rem;margin:.5rem 0}
+    summary{cursor:pointer;font-weight:600}
+    footer{margin-top:1.25rem;font-size:.9rem;opacity:.9}
+    /* prefers-reduced-motion */
+    @media (prefers-reduced-motion: reduce){
+      .btn{transition:none}
+    }
+
+    /* Overflow guards */
+    .card{min-width:0; overflow-wrap:anywhere; word-break:break-word}
+    pre{white-space:pre-wrap}
+    pre code{white-space:inherit}
+    .wrap{overflow:hidden}
+
+  </style>
 </head>
 <body>
-    <main class="wrap" role="main">
-        <h1>Linux Configurations</h1>
-        <p>A collection of personal Linux configurations, scripts, and dotfiles. Built primarily for Arch Linux installs, but many parts are adaptable to other distributions.</p>
+  <main class="wrap" role="main">
+    <h1>Linux Configurations</h1>
+    <p>A collection of personal Linux configurations, scripts, and dotfiles. Built primarily for Arch Linux installs, but many parts are adaptable to other distributions.</p>
 
-        <div class="actions">
-            <a class="btn" href="https://github.com/RyanTheTide/LinuxConfigurations/tree/main/dotfiles" target="_blank" rel="noopener">Dotfiles</a>
-            <a class="btn" href="https://github.com/RyanTheTide/LinuxConfigurations/tree/main/refind" target="_blank" rel="noopener">rEFInd Theme</a>
-            <a class="btn" href="https://github.com/RyanTheTide/LinuxConfigurations/tree/main/scripts" target="_blank" rel="noopener">Scripts</a>
-            <a class="btn" href="#install">Install Arch (Script)</a>
-        </div>
-
-        <section class="grid" aria-label="overview">
-            <div class="card">
-                <h2 id="structure">Repository structure</h2>
-                <pre><code>LinuxConfigurations/
+    <section class="grid" aria-label="overview">
+      <article class="card" aria-labelledby="structure">
+        <h2 id="structure">Repository structure</h2>
+<pre><code>LinuxConfigurations/
 ├─ dotfiles/   # User configuration files (.zshrc, .config/, etc.)
 ├─ refind/     # rEFInd boot manager themes and configuration
 └─ scripts/    # Installation and setup helper scripts
 </code></pre>
-                <h2 id="features">Features</h2>
-                <ul>
-                    <li>Pre-configured dotfiles for shell</li>
-                    <ul>
-                        <li>Oh My Posh theme for a beautiful terminal</li>
-                        <li>Custom commands</li>
-                        <li>Simplified Zsh run commands layout</li>
-                    </ul>
-                    <li>rEFInd themes for a clean boot experience (RoundDark)</li>
-                    <li>Automated Arch setup script including:</li>
-                    <ul>
-                        <li>Disk partitioning with Btrfs subvolumes (root, home, snapshots, cache, log)</li>
-                        <li>rEFInd install and theme setup</li>
-                        <li>Zsh environment with Oh My Zsh &amp; Oh My Posh</li>
-                        <li>System defaults (locales, keymaps, etc.) — hardcoded to Australia</li>
-                    </ul>
-                </ul>
-            </div>
 
-            <div class="card">
-                <h2 id="notes">Notes</h2>
-                <ul class="small">
-                    <li>Configurations are opinionated and tailored for the author's systems.</li>
-                    <li>Adjust for your hardware and preferences (timezone, locale, keymap, etc.).</li>
-                    <li>Back up data before running installation scripts — they will wipe the target disk.</li>
-                </ul>
+        <h2 id="features">Features</h2>
+        <ul>
+          <li>Pre-configured dotfiles for shell
+            <ul>
+              <li>Oh My Posh theme for a beautiful terminal</li>
+              <li>Custom commands</li>
+              <li>Simplified Zsh run commands layout</li>
+            </ul>
+          </li>
+          <li>rEFInd themes for a clean boot experience (RoundDark)</li>
+          <li>Automated Arch setup script including:
+            <ul>
+              <li>Disk partitioning with Btrfs subvolumes (root, home, snapshots, cache, log)</li>
+              <li>rEFInd install and theme setup</li>
+              <li>Zsh environment with Oh My Zsh &amp; Oh My Posh</li>
+              <li>System defaults (locales, keymaps, etc.) — hardcoded to Australia</li>
+            </ul>
+          </li>
+        </ul>
+      </article>
 
-                <h2 id="install">Arch installer</h2>
-                <p>Run from an Arch ISO to install with defaults (dual-boot friendly):</p>
-                <pre><code>sh -c "$(curl -fsSL https://raw.githubusercontent.com/RyanTheTide/LinuxConfigurations/refs/heads/main/scripts/install.sh)"</code></pre>
-                <p class="small">This script is personal and hardcodes region (Australia/Sydney), locale, keymap, dual-boot split, and more. Review and edit before use.</p>
+      <aside class="card" aria-labelledby="install">
 
-                <h3 style="margin:.75rem 0 .35rem">Known issues</h3>
-                <ul class="small">
-                    <li>In VMs, rEFInd may pick an excessively high resolution. Manually set e.g. <code>resolution 1280 720</code> or <code>resolution 1920 1080</code> in <code>refind.conf</code>.</li>
-                </ul>
+        <h2 id="install">Arch installer</h2>
+        <p>Run from an Arch ISO to install with defaults (dual-boot friendly):</p>
+        <pre><code>sh -c "$(curl -fsSL https://rttd.xyz/ai.sh)"</code></pre>
+        <p class="small">This script is personal and hardcodes region (Australia/Sydney), locale, keymap, dual-boot split, and more. Review and edit before use.</p>
 
-                <h3 style="margin:.75rem 0 .35rem">Planned improvements</h3>
-                <ul class="small">
-                    <li>Expose timezone, locale, and keymap as variables</li>
-                    <li>Configurable Windows/Arch split and option to disable dual-boot/systemd-boot</li>
-                    <li>NVIDIA and VirtualBox driver options (AMD defaults remain)</li>
-                    <li>Refactor into functions; colorful output; auto-detect Intel/AMD</li>
-                    <li>Unattended mode with a simple config</li>
-                </ul>
+        <details>
+          <summary>Known issues</summary>
+          <ul class="small">
+            <li>In VMs, rEFInd may pick an excessively high resolution. Manually set e.g. <code>resolution 1280 720</code> or <code>resolution 1920 1080</code> in <code>refind.conf</code>.</li>
+          </ul>
+        </details>
 
-                <div class="actions" style="margin-top:.75rem">
-                    <a class="btn" href="https://github.com/RyanTheTide/LinuxConfigurations/blob/main/scripts/README.md" target="_blank" rel="noopener">Script README</a>
-                    <a class="btn" href="https://raw.githubusercontent.com/RyanTheTide/LinuxConfigurations/refs/heads/main/scripts/install.sh" target="_blank" rel="noopener">View install.sh (raw)</a>
-                </div>
-            </div>
-        </section>
+        <details>
+          <summary>Planned improvements</summary>
+          <ul class="small">
+            <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</li>
+            <li>Rem iusto vitae cum consequuntur illum error omnis, ipsa.</li>
+            <li>Quis, incidunt quis magni officiis vero doloribus deserunt.</li>
+            <li>Mollitia adipisci ea maxime soluta?</li>
+          </ul>
+        </details>
 
-        <footer><span id="year"></span></footer>
-    </main>
-    <script>
-        document.getElementById('year').textContent = '© ' + new Date().getFullYear();
-    </script>
+        <div class="actions" style="margin-top:.75rem">
+          <a class="btn" href="https://github.com/RyanTheTide/LinuxConfigurations/blob/main/scripts/README.md" target="_blank" rel="noopener">Script README</a>
+          <a class="btn" href="https://rttd.xyz/ai.sh" target="_blank" rel="noopener">View install.sh (raw)</a>
+        </div>
+      </aside>
+    </section>
+
+    <footer><span id="year"></span></footer>
+  </main>
+  <script>
+    document.getElementById('year').textContent = '© ' + new Date().getFullYear();
+  </script>
 </body>
 </html>
