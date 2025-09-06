@@ -45,4 +45,5 @@ EOF
     if [[ "$__var" != "YES" ]]; then
         log_fatal "Confirmation not received. Installation aborted."
     fi
+    echo
 }
