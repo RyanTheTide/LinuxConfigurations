@@ -1,1 +1,1 @@
-# LinuxConfigurations by RTTDev
+# Scripts by RTTDev
