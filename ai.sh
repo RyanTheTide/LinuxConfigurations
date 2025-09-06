@@ -7,7 +7,7 @@ uri=https://github.com/RyanTheTide/LinuxConfigurations/archive/refs/heads/main.t
 
 bootstrap() {
 	cd /tmp
-	curl -fsSL "${uri}" | tar -xz
+	curl -sS "${uri}" | tar -xz
 	cd LinuxConfigurations-main/scripts/newinstall
 	chmod +x main.sh
 	exec ./main.sh "$@"
