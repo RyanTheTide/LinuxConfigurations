@@ -6,6 +6,8 @@ set -euo pipefail
 uri=https://github.com/RyanTheTide/LinuxConfigurations/archive/refs/heads/main.tar.gz
 
 bootstrap() {
+	clear
+	echo "Bootstrapping installer..."
 	cd /tmp
 	curl -sS "${uri}" | tar -xz
 	cd LinuxConfigurations-main/scripts/newinstall
