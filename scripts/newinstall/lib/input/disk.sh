@@ -4,6 +4,7 @@
 
 input_disk() {
     local __var
+    printf "Let's get started by selecting a target disk for installation!"
     printf '%.0s-' {1..54}; echo
     lsblk -dn -o NAME,SIZE,MODEL | grep -v '^loop' | awk '{print "/dev/" $1, "-", $2, "-", substr($0, index($0,$3))}'
     printf '%.0s-' {1..54}; echo
