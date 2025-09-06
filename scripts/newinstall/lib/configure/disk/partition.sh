@@ -34,26 +34,27 @@ create_partitions_layout() {
 
 # Creates partitions
 create_partitions() {
+	__var="${disk%p}"
     # shellcheck disable=SC2154
-    log_info "Creating partitions on $disk..."
-	parted -s "${disk}" mklabel gpt
-	parted -s "${disk}" mkpart primary fat32 1MiB "${efi_end}"MiB
-	parted -s "${disk}" set 1 esp on
-	parted -s "${disk}" name 1 "EFI"
+    log_info "Creating partitions on $__var..."
+	parted -s "${__var}" mklabel gpt
+	parted -s "${__var}" mkpart primary fat32 1MiB "${efi_end}"MiB
+	parted -s "${__var}" set 1 esp on
+	parted -s "${__var}" name 1 "EFI"
 	if [[ ${no_windows} == 1 ]]; then
-		parted -s "${disk}" mkpart primary btrfs "${efi_end}"MiB 100%
-		parted -s "${disk}" name 2 "Arch"
+		parted -s "${__var}" mkpart primary btrfs "${efi_end}"MiB 100%
+		parted -s "${__var}" name 2 "Arch"
 	else
-		parted -s "${disk}" mkpart primary "${efi_end}"MiB "${msr_end}"MiB
-		parted -s "${disk}" set 2 msftres on
-		parted -s "${disk}" name 2 "MSR"
-		parted -s "${disk}" mkpart primary ntfs "${msr_end}"MiB "${win_end}"MiB
-		parted -s "${disk}" set 3 msftdata on
-		parted -s "${disk}" name 3 "Windows"
-		parted -s "${disk}" mkpart primary btrfs "${win_end}"MiB 100%
-		parted -s "${disk}" name 4 "Arch"
+		parted -s "${__var}" mkpart primary "${efi_end}"MiB "${msr_end}"MiB
+		parted -s "${__var}" set 2 msftres on
+		parted -s "${__var}" name 2 "MSR"
+		parted -s "${__var}" mkpart primary ntfs "${msr_end}"MiB "${win_end}"MiB
+		parted -s "${__var}" set 3 msftdata on
+		parted -s "${__var}" name 3 "Windows"
+		parted -s "${__var}" mkpart primary btrfs "${win_end}"MiB 100%
+		parted -s "${__var}" name 4 "Arch"
 	fi
-    partprobe "$disk"
+    partprobe "$__var"
     udevadm settle
     sleep 2
     # shellcheck disable=SC2154
