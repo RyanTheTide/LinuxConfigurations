@@ -35,7 +35,7 @@ create_partitions_layout() {
 # Creates partitions
 create_partitions() {
     # shellcheck disable=SC2154
-    log_info "Creating partitions on $taget_disk..."
+    log_info "Creating partitions on $disk..."
 	parted -s "${disk}" mklabel gpt
 	parted -s "${disk}" mkpart primary fat32 1MiB "${efi_end}"MiB
 	parted -s "${disk}" set 1 esp on
