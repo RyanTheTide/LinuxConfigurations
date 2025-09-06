@@ -4,11 +4,13 @@
 # - ask: Prompt user for input and store in variable
 # - asks: Prompt user for silent input and store in variable
 # - confirm: Prompt user for yes/no confirmation, defaults to yes
+# - say: Print message
 
 # Usage examples:
 # - ask - `ask var "prompt" "default"`
 # - asks - `asks var "prompt"`
 # - confirm - `confirm "prompt"`
+# - say - `say "message"`
 
 ask() {
     local __var="$1"
@@ -47,4 +49,8 @@ confirm() {
             * ) echo "Please answer yes (y) or no (n)." ;;
         esac
     done
+}
+
+say() {
+    printf '%s\n' "$*"
 }
