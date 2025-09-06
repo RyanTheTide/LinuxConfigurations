@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 input_welcome() {
+  clear
   cat <<EOF
 ------------------------------------------------------
   Welcome to ArchInstaller by RyanTheTide!
