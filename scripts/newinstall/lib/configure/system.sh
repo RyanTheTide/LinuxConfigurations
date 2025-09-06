@@ -29,4 +29,5 @@ EOF
     echo KEYMAP="${keymap}" > /mnt/etc/vconsole.conf
     # shellcheck disable=SC2154
     arch-chroot /mnt ln -sf "/usr/share/zoneinfo/${timezone}" /etc/localtime
+	log_success "System configured."
 }
