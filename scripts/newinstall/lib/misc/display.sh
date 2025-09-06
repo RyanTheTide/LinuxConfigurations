@@ -29,6 +29,7 @@ User Information:
     New User Password: (hidden)
     New User Full Name: ${newuserdescription}
     Root Password: (hidden)
+
 EOF
 }
 
