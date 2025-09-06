@@ -13,8 +13,8 @@
 # - say - `say "message"`
 
 ask() {
-    local __var="$1"
-    local __prompt="$2"
+    local var_name="$1"
+    local __prompt="$2" 
     local __default="${3:-}"
     local __input
     if [[ -n "$__default" ]]; then
@@ -24,9 +24,10 @@ ask() {
         read -rp "${__prompt}: " __input
     fi
     echo
-    echo "DEBUG: Setting $__var to '$__input'"
-    eval "$__var='$__input'"
-    echo "DEBUG: Variable set, value is: ${!__var}"
+    echo "DEBUG: Setting variable '$var_name' to value '$__input'"
+    eval "$var_name='$__input'"
+    echo "DEBUG: Variable $var_name now contains: ${!var_name}"
+}
 }
 asks() {
     local __var="$1"
