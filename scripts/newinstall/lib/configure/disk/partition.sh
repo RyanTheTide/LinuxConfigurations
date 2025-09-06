@@ -11,6 +11,7 @@ create_partitions_layout() {
     # shellcheck disable=SC2154
     disksize=$(lsblk -bno SIZE "${__var}" | head -n1)
     disksize_mib=$((disksize / 1024 / 1024))
+	efi_end=2049
     # shellcheck disable=SC2154
     if (( no_windows == 1 )); then
         msr_end=${efi_end}
