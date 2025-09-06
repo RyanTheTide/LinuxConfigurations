@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 display_configuration() {
+    clear
     # shellcheck disable=SC2154
     cat <<EOF
 ====================================================================
