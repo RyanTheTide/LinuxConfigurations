@@ -9,7 +9,7 @@ bootstrap() {
 	clear
 	echo "Bootstrapping installer..."
 	cd /tmp
-	curl -sS "${uri}" | tar -xz
+	curl -fsSL "${uri}" | tar -xz
 	cd LinuxConfigurations-main/scripts/newinstall
 	chmod +x main.sh
 	exec ./main.sh "$@"
