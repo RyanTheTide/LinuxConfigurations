@@ -8,7 +8,7 @@
 configure_accounts() {
     log_info "Configuring user accounts..."
     # shellcheck disable=SC2154
-    arch-chroot /mnt useradd -c "${userdescription}" -m -G wheel -s /usr/bin/zsh "${newusername}" > /dev/null 2>&1
+    arch-chroot /mnt useradd -c "${newuserdescription}" -m -G wheel -s /usr/bin/zsh "${newusername}" > /dev/null 2>&1
     # shellcheck disable=SC2154
     echo "${newusername}:${newuserpassword}" | chpasswd --root /mnt > /dev/null 2>&1
     # shellcheck disable=SC2154
