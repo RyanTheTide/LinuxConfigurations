@@ -13,10 +13,8 @@ input_welcome() {
   The base system will be installed with:
   - btrfs filesystem
   - rEFInd bootmanager
-  - 
 
   Please follow the prompts to complete the setup.
 ------------------------------------------------------
-
 EOF
 }
