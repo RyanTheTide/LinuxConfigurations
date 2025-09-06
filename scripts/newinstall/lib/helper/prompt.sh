@@ -28,7 +28,6 @@ ask() {
     eval "$var_name='$__input'"
     echo "DEBUG: Variable $var_name now contains: ${!var_name}"
 }
-}
 asks() {
     local __var="$1"
     local __prompt="$2"
