@@ -24,7 +24,9 @@ ask() {
         read -rp "${__prompt}: " __input
     fi
     echo
+    echo "DEBUG: Setting $__var to '$__input'"
     printf -v "$__var" '%s' "$__input"
+    echo "DEBUG: Variable set, value is: ${!__var}"
 }
 asks() {
     local __var="$1"
