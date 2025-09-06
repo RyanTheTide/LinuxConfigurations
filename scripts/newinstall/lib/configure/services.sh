@@ -16,4 +16,5 @@ configure_services() {
     if [[ "$is_mirrors" == 1 ]] ; then
         arch-chroot /mnt systemctl enable reflector.timer > /dev/null 2>&1
     fi
+	log_success "Services configured."
 }
