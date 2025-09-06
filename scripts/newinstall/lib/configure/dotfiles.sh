@@ -14,4 +14,5 @@ cd LinuxConfigurations > /dev/null 2>&1
 cp -r dotfiles/. "$HOME" > /dev/null 2>&1
 history -c > /dev/null 2>&1
 EOL
+    log_success "Dotfiles configured."
 }
