@@ -19,7 +19,7 @@ input_system() {
         while true; do
             ask __var1 "Enter your main locale (e.g. en_AU)" "en_AU"
             __var1="${__var1//[[:space:]]/}"
-            if localectl list-locales | grep -qx -- "${__var1}.UTF-8"; then
+            if [[ "$__var1" =~ ^[a-z]{2}_[A-Z]{2}$ ]]; then
                 # shellcheck disable=SC2034
                 main_locale="${__var1}.UTF-8"
                 # shellcheck disable=SC2034
