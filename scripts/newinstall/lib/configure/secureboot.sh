@@ -4,7 +4,6 @@
 # Please ensure that secure boot is set to "Setup Mode" in your UEFI firmware settings before proceeding.
 
 set_secureboot() {
-    log_info "Installing Secure Boot support..."
     arch-chroot /mnt pacman -S --noconfirm sbctl > /dev/null 2>&1
     log_info "Configuring Secure Boot..."
     arch-chroot /mnt sbctl create-keys > /dev/null 2>&1
