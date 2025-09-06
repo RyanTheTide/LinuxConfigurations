@@ -1,4 +1,4 @@
-o#!/usr/bin/env bash
+#!/usr/bin/env bash
 
 # Disk input script to select disk and determine if it's an SSD.
 
