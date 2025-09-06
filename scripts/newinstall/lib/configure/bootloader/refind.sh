@@ -3,9 +3,7 @@
 # rEFInd configuration script sets up the rEFInd bootloader.
 
 set_refind() {
-    log_info "Installing rEFInd bootmanager..."
     arch-chroot /mnt pacman -S --noconfirm refind efibootmgr > /dev/null 2>&1
-    log_success "rEFInd bootmanager installed."
 	log_info "Configuring rEFInd bootmanager..."
 	arch-chroot /mnt refind-install > /dev/null 2>&1
 	rm -f /mnt/boot/refind_linux.conf > /dev/null 2>&1
@@ -27,7 +25,5 @@ EOF
 	# Copy custom rEFInd configuration/theme from repo
 	mv /mnt/efi/EFI/refind/refind.conf /mnt/efi/EFI/refind/refind.conf.bak
 	cp -r /mnt/var/tmp/LinuxConfigurations/refind /mnt/efi/EFI/
-	# shellcheck disable=SC2034
-	is_refind=1
     log_success "rEFInd bootmanager configured."
 }
