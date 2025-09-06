@@ -17,5 +17,6 @@ The base system will be installed with the following:
 - pacman mirrors (organised by speed, set by country)
 
 Thanks for using my script & follow the folowing prompts!
+
 EOF
 }
