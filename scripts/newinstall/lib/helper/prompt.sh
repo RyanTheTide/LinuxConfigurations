@@ -24,17 +24,15 @@ ask() {
         read -rp "${__prompt}: " __input
     fi
     echo
-    echo "DEBUG: Setting variable '$var_name' to value '$__input'"
     eval "$var_name='$__input'"
-    echo "DEBUG: Variable $var_name now contains: ${!var_name}"
 }
 asks() {
-    local __var="$1"
+    local var_name="$1"
     local __prompt="$2"
     local __input
     read -rsp "${__prompt}: " __input
     echo
-    printf -v "$__var" '%s' "$__input"
+    eval "$var_name='$__input'"
 }
 
 confirm() {
