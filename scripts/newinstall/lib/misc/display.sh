@@ -9,7 +9,7 @@ Current Configuration
 
 Disk Information:
 Disk: ${disk}
-Is SSD: ${is_ssd}
+Is SSD: $([[ ${is_ssd} -eq 1 ]] && echo "yes" || echo "no")
 
 System Information:
 Main Locale: ${main_locale}
@@ -21,9 +21,9 @@ Hostname: ${hostname}
 
 Boot Information:
 CPU Manufacturer: ${cpu_manufacturer}
-Dual-Boot Enabled: ${no_windows}
-Secure Boot Enabled: ${is_secureboot}
-rEFInd Enabled: ${is_refind}
+Dual-Boot Enabled: $([[ ${no_windows} -eq 0 ]] && echo "yes" || echo "no")
+Secure Boot Enabled: $([[ ${is_secureboot} -eq 1 ]] && echo "yes" || echo "no")
+rEFInd Enabled: $([[ ${is_refind} -eq 1 ]] && echo "yes" || echo "no")
 
 User Information:
 New Username: ${newusername}
