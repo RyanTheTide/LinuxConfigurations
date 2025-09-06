@@ -32,12 +32,12 @@ main() {
 	create_efi_volume
 	mount_efi_volume
 
-	if [[ ${is_mirrors} == 1 ]]; then
-		set_mirrors
-	fi
 	install_base
 	configure_system
 	install_extra
+	if [[ ${is_mirrors} == 1 ]]; then
+		set_mirrors
+	fi
 
 	configure_accounts
 	configure_shell
