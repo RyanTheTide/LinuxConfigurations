@@ -15,4 +15,5 @@ curl -s https://ohmyposh.dev/install.sh | bash -s > /dev/null 2>&1
 "$HOME/.local/bin/oh-my-posh" font install meslo > /dev/null 2>&1
 mv "$HOME/.zshrc" "$HOME/.zshrc.bak" > /dev/null 2>&1
 EOL
+    log_success "Shell configured."
 }
