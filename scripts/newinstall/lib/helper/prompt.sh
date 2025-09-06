@@ -25,7 +25,7 @@ ask() {
     fi
     echo
     echo "DEBUG: Setting $__var to '$__input'"
-    printf -v "$__var" '%s' "$__input"
+    eval "$__var='$__input'"
     echo "DEBUG: Variable set, value is: ${!__var}"
 }
 asks() {
