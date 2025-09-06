@@ -36,7 +36,7 @@ create_partitions_layout() {
 create_partitions() {
 	__var="${disk%p}"
     # shellcheck disable=SC2154
-    log_info "Creating partitions on $__var..."
+    log_info "Creating partitions..."
 	parted -s "${__var}" mklabel gpt
 	parted -s "${__var}" mkpart primary fat32 1MiB "${efi_end}"MiB
 	parted -s "${__var}" set 1 esp on
