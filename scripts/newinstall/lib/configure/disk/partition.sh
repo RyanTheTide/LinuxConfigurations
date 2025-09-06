@@ -6,9 +6,10 @@
 
 # Creates partitions layout
 create_partitions_layout() {
-    local disksize disksize_mib
+    local disksize disksize_mib __var
+	__var="${disk%p}"
     # shellcheck disable=SC2154
-    disksize=$(lsblk -bno SIZE "${disk}" | head -n1)
+    disksize=$(lsblk -bno SIZE "${__var}" | head -n1)
     disksize_mib=$((disksize / 1024 / 1024))
     # shellcheck disable=SC2154
     if (( no_windows == 1 )); then
