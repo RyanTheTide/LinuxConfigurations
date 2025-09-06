@@ -2,7 +2,7 @@
 
 input_welcome() {
   cat <<EOF
-====================================================
+------------------------------------------------------
   Welcome to ArchInstaller by RyanTheTide!
 
   This script will install a Arch Linux system
@@ -15,6 +15,7 @@ input_welcome() {
   - 
 
   Please follow the prompts to complete the setup.
-====================================================
+------------------------------------------------------
+
 EOF
 }
