@@ -14,4 +14,5 @@ configure_accounts() {
     # shellcheck disable=SC2154
     echo "root:${rootpassword}" | chpasswd --root /mnt > /dev/null 2>&1
     arch-chroot /mnt sed -i 's/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers > /dev/null 2>&1
+    log_success "User accounts configured."
 }
