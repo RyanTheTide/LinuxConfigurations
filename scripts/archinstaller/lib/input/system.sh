@@ -11,6 +11,8 @@
 input_system() {
 # Locale & Keymap
     local __var1 __var2
+    is_refind=1
+
     if confirm "Are you within the USA?" ; then
         main_locale="en_US.UTF-8"
         secondary_locale=""
@@ -84,8 +86,12 @@ input_system() {
     if confirm "Do you wish to set mirrors based on $country?" ; then
         is_mirrors=1
     else
-        # shellcheck disable=SC2034
         is_mirrors=0
     fi
-    is_refind=1
+# Microcode
+    if confirm "Would you like to install CPU microcode?" ; then
+        is_microcode=1
+    else
+        is_microcode=0
+    fi
 }

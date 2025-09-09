@@ -3,7 +3,7 @@
 # Base install script installs the base system with optional CPU microcode.
 
 install_base() {
-    if confirm "Do you wish to install CPU microcode?"; then
+    if [[ ${is_microcode} -eq 1 ]]; then
         # shellcheck disable=SC2154
         if [[ $cpu_manufacturer == "intel" || $cpu_manufacturer == "amd" ]]; then
             log_info "Installing base system with microcode (this may take a while)..."

@@ -8,7 +8,7 @@ Current Configuration
 
 Disk Information:
     Disk: ${disk}
-    Is SSD: $([[ ${is_ssd} -eq 1 ]] && echo "yes" || echo "no")
+    SSD Detected: $([[ ${is_ssd} -eq 1 ]] && echo "yes" || echo "no")
 
 System Information:
     Main Locale: ${main_locale}
@@ -20,15 +20,14 @@ System Information:
 
 Boot Information:
     CPU Manufacturer: ${cpu_manufacturer}
+    Microcode Enabled: $([[ ${is_microcode} -eq 1 ]] && echo "yes" || echo "no")
     Dual-Boot Enabled: $([[ ${no_windows} -eq 0 ]] && echo "yes" || echo "no")
     Secure Boot Enabled: $([[ ${is_secureboot} -eq 1 ]] && echo "yes" || echo "no")
     rEFInd Enabled: $([[ ${is_refind} -eq 1 ]] && echo "yes" || echo "no")
 
 User Information:
     New Username: ${newusername}
-    New User Password: (hidden)
     New User Full Name: ${newuserdescription}
-    Root Password: (hidden)
 
 EOF
 }
