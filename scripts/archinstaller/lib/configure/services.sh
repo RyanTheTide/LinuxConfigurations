@@ -9,24 +9,24 @@
 configure_services() {
     log_info "Configuring services..."
     if [[ "${is_ssd}" == 1 ]]; then
-        systemctl --root=/mnt systemctl enable fstrim.timer >/dev/null 2>&1
+        systemctl --root=/mnt enable fstrim.timer >/dev/null 2>&1
     fi
-    systemctl --root=/mnt systemctl enable NetworkManager >/dev/null 2>&1
+    systemctl --root=/mnt enable NetworkManager >/dev/null 2>&1
     if [[ "$is_mirrors" == 1 ]]; then
-        systemctl --root=/mnt systemctl enable reflector.timer >/dev/null 2>&1
+        systemctl --root=/mnt enable reflector.timer >/dev/null 2>&1
     fi
     if [[ "$is_virtualization" == 1 ]]; then
         if [[ ${is_virtualization_virtualbox:-0} -eq 1 ]]; then
-            systemctl --root=/mnt systemctl enable vboxservice.service >/dev/null 2>&1
+            systemctl --root=/mnt enable vboxservice.service >/dev/null 2>&1
         fi
         if [[ ${is_virtualization_vmware:-0} -eq 1 ]]; then
-            systemctl --root=/mnt systemctl enable vmtoolsd.service vmware-vmblock-fuse.service >/dev/null 2>&1
+            systemctl --root=/mnt enable vmtoolsd.service vmware-vmblock-fuse.service >/dev/null 2>&1
         fi
         if [[ ${is_virtualization_hyperv:-0} -eq 1 ]]; then
-            systemctl --root=/mnt systemctl enable hv_kvp_daemon.service hv_vss_daemon.service >/dev/null 2>&1
+            systemctl --root=/mnt enable hv_kvp_daemon.service hv_vss_daemon.service >/dev/null 2>&1
         fi
         if [[ ${is_virtualization_qemu:-0} -eq 1 ]]; then
-            systemctl --root=/mnt systemctl enable qemu-guest-agent.service >/dev/null 2>&1
+            systemctl --root=/mnt enable qemu-guest-agent.service >/dev/null 2>&1
         fi
     fi
     log_success "Services configured."
