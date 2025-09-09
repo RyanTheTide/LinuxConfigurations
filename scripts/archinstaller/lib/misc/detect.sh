@@ -25,3 +25,21 @@ detect_virtualization() {
         hypervisor_type="none"
     fi
 }
+
+detect_secureboot() {
+    local __var1 __var2
+    if ! command -v sbctl >/dev/null 2>&1; then
+        pacman -Sy --noconfirm sbctl >/dev/null 2>&1
+    fi
+    __var1=$(sbctl status 2>/dev/null | grep -i '^Setup Mode:' || true)
+    if [[ -n "$__var1" ]]; then
+        __var2=$(awk -F': *' '{print tolower($2)}' <<<"$__var1" | awk '{print $1}')
+        if [[ "$__var2" == "enabled" ]]; then
+            is_secureboot=1
+        else
+            is_secureboot=0
+        fi
+        return 0
+    fi
+    is_secureboot=0
+}

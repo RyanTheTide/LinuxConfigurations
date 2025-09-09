@@ -15,11 +15,13 @@ trap 'log_fatal "Error $?: command '\''${BASH_COMMAND}'\'' at ${BASH_SOURCE[0]}:
 main() {
 	require_root
 	detect_virtualization
+	detect_secureboot
+	detect_cpu_manufacturer
+
 	input_welcome
 	input_disk
 	input_system
 	input_user
-	detect_cpu_manufacturer
 
 	display_configuration
 	display_warning

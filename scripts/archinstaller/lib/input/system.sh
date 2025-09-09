@@ -55,14 +55,17 @@ input_system() {
     fi
     echo
 # Secure Boot
-    if confirm "Would you like to disable Secure Boot?" ; then
-        # shellcheck disable=SC2034
-        is_secureboot=0
-    else
-        # shellcheck disable=SC2034
-        is_secureboot=1
+    if [[ ${is_secureboot:-0} -eq 1 ]]; then
+        say "Secure Boot detected in Setup Mode."
+        if confirm "Would you like to enable Secure Boot?"; then
+            # shellcheck disable=SC2034
+            is_secureboot=1
+        else
+            # shellcheck disable=SC2034
+            is_secureboot=0
+        fi
+        echo
     fi
-    echo
 # Timezone
     while true; do
         ask timezone "Enter your timezone (e.g. Australia/Sydney)" "Australia/Sydney"
