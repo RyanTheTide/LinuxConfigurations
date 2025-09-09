@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 
 display_configuration() {
+    __var="${disk%p}"
     clear
     # shellcheck disable=SC2154
     cat <<EOF
 Current Configuration
 
 Disk Information:
-    Disk: ${disk}
+    Disk: ${__var}
     SSD Detected: $([[ ${is_ssd} -eq 1 ]] && echo "yes" || echo "no")
 
 System Information:
@@ -33,15 +34,16 @@ EOF
 }
 
 display_warning() {
-    local __var
+    local __var1 __var2
+    __var2="${disk%p}"
     cat <<EOF
 ==============================================================================
-WARNING: Proceeding will ERASE ALL DATA on the selected disk ($disk).
+WARNING: Proceeding will ERASE ALL DATA on the selected disk ($__var2).
 Ensure you have backed up any important data before continuing.
 ==============================================================================
 EOF
-    read -rp "Type YES to confirm and continue: " __var
-    if [[ "$__var" != "YES" ]]; then
+    read -rp "Type YES to confirm and continue: " __var1
+    if [[ "$__var1" != "YES" ]]; then
         log_fatal "Confirmation not received. Installation aborted."
     fi
     echo
