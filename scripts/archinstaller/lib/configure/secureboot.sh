@@ -12,6 +12,7 @@ set_secureboot() {
     # shellcheck disable=SC2154
     if [[ ${is_refind} == 1 ]]; then
         arch-chroot /mnt sbctl sign -s /efi/EFI/refind/refind_x64.efi > /dev/null 2>&1
+        arch-chroot /mnt sbctl sign -s /efi/EFI/refind/drivers_x64/btrfs_x64.efi > /dev/null 2>&1
     fi
     log_success "Secure Boot configured."
 }
