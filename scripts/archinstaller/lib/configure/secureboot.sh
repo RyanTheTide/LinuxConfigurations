@@ -7,12 +7,7 @@ set_secureboot() {
     arch-chroot /mnt pacman -S --noconfirm sbctl > /dev/null 2>&1
     log_info "Configuring Secure Boot..."
     arch-chroot /mnt sbctl create-keys > /dev/null 2>&1
-    # shellcheck disable=SC2154
-    if [[ ${no_windows} == 0 ]]; then
-        arch-chroot /mnt sbctl enroll-keys --microsoft > /dev/null 2>&1
-    else
-        arch-chroot /mnt sbctl enroll-keys > /dev/null 2>&1
-    fi
+    arch-chroot /mnt sbctl enroll-keys --microsoft
     arch-chroot /mnt sbctl sign -s /boot/vmlinuz-linux > /dev/null 2>&1
     # shellcheck disable=SC2154
     if [[ ${is_refind} == 1 ]]; then
