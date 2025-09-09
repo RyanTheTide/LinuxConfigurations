@@ -33,7 +33,7 @@ detect_secureboot() {
     fi
     __var1=$(sbctl status 2>/dev/null | grep -i '^Setup Mode:.*Enabled' || true)
     if [[ -n "$__var1" ]]; then
-        __var2=$(awk -F': *' '{print tolower($2)}' <<<"$__var1" | awk '{print $1}')
+        __var2=$(awk -F': *' '{print tolower($0)}' <<<"$__var1" | awk '{print $NF}')
         if [[ "$__var2" == "enabled" ]]; then
             is_secureboot=1
         else
