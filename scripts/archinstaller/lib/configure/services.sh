@@ -4,17 +4,31 @@
 # - fstrim.timer : for SSDs (set by is_ssd variable)
 # - NetworkManager : network management
 # - reflector.timer : to update mirrors (set by is_mirrors variable)
+# - virtualization tools (set by is_virtualization and related variables)
 
 configure_services() {
-	log_info "Configuring services..."
-    # shellcheck disable=SC2154
-    if [[ "${is_ssd}" == 1 ]] ; then
-        arch-chroot /mnt systemctl enable fstrim.timer > /dev/null 2>&1
+    log_info "Configuring services..."
+    if [[ "${is_ssd}" == 1 ]]; then
+        systemctl --root=/mnt systemctl enable fstrim.timer >/dev/null 2>&1
     fi
-	arch-chroot /mnt systemctl enable NetworkManager > /dev/null 2>&1
-    # shellcheck disable=SC2154
-    if [[ "$is_mirrors" == 1 ]] ; then
-        arch-chroot /mnt systemctl enable reflector.timer > /dev/null 2>&1
+    systemctl --root=/mnt systemctl enable NetworkManager >/dev/null 2>&1
+    if [[ "$is_mirrors" == 1 ]]; then
+        systemctl --root=/mnt systemctl enable reflector.timer >/dev/null 2>&1
     fi
-	log_success "Services configured."
+    if [[ "$is_virtualization" == 1 ]]; then
+        if [[ ${is_virtualization_virtualbox:-0} -eq 1 ]]; then
+            systemctl --root=/mnt systemctl enable vboxservice.service >/dev/null 2>&1
+        fi
+        if [[ ${is_virtualization_vmware:-0} -eq 1 ]]; then
+            systemctl --root=/mnt systemctl enable vmtoolsd.service vmware-vmblock-fuse.service >/dev/null 2>&1
+        fi
+        if [[ ${is_virtualization_hyperv:-0} -eq 1 ]]; then
+            systemctl --root=/mnt systemctl enable hv_kvp_daemon.service hv_vss_daemon.service >/dev/null 2>&1
+        fi
+        if [[ ${is_virtualization_qemu:-0} -eq 1 ]]; then
+            systemctl --root=/mnt systemctl enable qemu-guest-agent.service >/dev/null 2>&1
+        fi
+    fi
+    log_success "Services configured."
 }
+

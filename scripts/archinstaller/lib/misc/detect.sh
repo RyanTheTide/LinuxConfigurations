@@ -13,3 +13,15 @@ detect_cpu_manufacturer() {
         cpu_manufacturer="unknown"
     fi
 }
+
+detect_virtualization() {
+    local __var
+    __var=$(systemd-detect-virt 2>/dev/null || echo "none")
+    if [[ "$__var" != "none" ]]; then
+        is_virtualization=1
+        hypervisor_type="$__var"
+    else
+        is_virtualization=0
+        hypervisor_type="none"
+    fi
+}

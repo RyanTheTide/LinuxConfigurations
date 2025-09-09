@@ -20,6 +20,8 @@ System Information:
     Hostname: ${hostname}
 
 Boot Information:
+
+$( [[ $is_virtualization -eq 1 ]] && printf '    Virtualization/Hypervisor: %s\n' "$hypervisor_type" )
     CPU Manufacturer: ${cpu_manufacturer}
     Microcode Enabled: $([[ ${is_microcode} -eq 1 ]] && echo "yes" || echo "no")
     Dual-Boot Enabled: $([[ ${no_windows} -eq 0 ]] && echo "yes" || echo "no")

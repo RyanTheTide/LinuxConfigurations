@@ -9,12 +9,12 @@ for f in "$__script_dir"/lib/**/*.sh; do
 	source "$f"
 done
 
-trap 'umount -R /mnt 2>/dev/null || true' EXIT
 trap 'log_fatal "Error $?: command '\''${BASH_COMMAND}'\'' at ${BASH_SOURCE[0]}:${LINENO}"' ERR
 
 # shellcheck disable=SC2154
 main() {
 	require_root
+	detect_virtualization
 	input_welcome
 	input_disk
 	input_system
@@ -37,6 +37,9 @@ main() {
 	install_extra
 	if [[ ${is_mirrors} == 1 ]]; then
 		set_mirrors
+	fi
+	if [[ ${is_virtualization} == 1 ]]; then
+		install_virtualization_tools
 	fi
 
 	configure_accounts
