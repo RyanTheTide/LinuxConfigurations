@@ -26,6 +26,7 @@ input_user() {
                     log_warn "Passwords do not match. Please try again."
                 fi
             done
+            echo
             ask newuserdescription "Enter your full name for $newusername" "$newusername"
             break
         else

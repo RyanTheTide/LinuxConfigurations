@@ -19,6 +19,7 @@ input_system() {
         keymap="us"
     else
         while true; do
+            echo
             ask __var1 "Enter your main locale (e.g. en_AU)" "en_AU"
             __var1="${__var1//[[:space:]]/}"
             if [[ "$__var1" =~ ^[a-z]{2}_[A-Z]{2}$ ]]; then
@@ -52,6 +53,7 @@ input_system() {
         # shellcheck disable=SC2034
         no_windows=1
     fi
+    echo
 # Secure Boot
     if confirm "Would you like to disable Secure Boot?" ; then
         # shellcheck disable=SC2034
@@ -60,6 +62,7 @@ input_system() {
         # shellcheck disable=SC2034
         is_secureboot=1
     fi
+    echo
 # Timezone
     while true; do
         ask timezone "Enter your timezone (e.g. Australia/Sydney)" "Australia/Sydney"
@@ -88,10 +91,12 @@ input_system() {
     else
         is_mirrors=0
     fi
+    echo
 # Microcode
     if confirm "Would you like to install CPU microcode?" ; then
         is_microcode=1
     else
         is_microcode=0
     fi
+    echo
 }
