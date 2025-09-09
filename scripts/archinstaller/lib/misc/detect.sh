@@ -31,7 +31,7 @@ detect_secureboot() {
     if ! command -v sbctl >/dev/null 2>&1; then
         pacman -Sy --noconfirm sbctl >/dev/null 2>&1
     fi
-    __var1=$(sbctl status 2>/dev/null | grep -i '^Setup Mode:' || true)
+    __var1=$(sbctl status 2>/dev/null | grep -i '^Setup Mode:.*Enabled' || true)
     if [[ -n "$__var1" ]]; then
         __var2=$(awk -F': *' '{print tolower($2)}' <<<"$__var1" | awk '{print $1}')
         if [[ "$__var2" == "enabled" ]]; then
