@@ -23,5 +23,6 @@ input_disk() {
             # shellcheck disable=SC2034
             is_ssd=0
         fi
+        echo
     fi
 }
