@@ -9,7 +9,7 @@ set_refind() {
 	rm -f /mnt/boot/refind_linux.conf > /dev/null 2>&1
 	touch /mnt/boot/refind_linux.conf
  	# shellcheck disable=SC2154
- 	if [[ $cpu_manufacturer == "intel" || $cpu_manufacturer == "amd" ]]; then
+ 	if [[ ${is_microcode} -eq 1 ]]; then
   		cat > /mnt/boot/refind_linux.conf <<EOF
 "Standard Boot"  "root=PARTUUID=${root_uuid} rw add_efi_memmap quiet rootflags=subvol=@ initrd=@\\boot\\${cpu_manufacturer}-ucode.img initrd=@\\boot\\initramfs-linux.img"
 "Fallback Boot"  "root=PARTUUID=${root_uuid} rw add_efi_memmap rootflags=subvol=@ initrd=@\\boot\\${cpu_manufacturer}-ucode.img initrd=@\\boot\\initramfs-linux-fallback.img"
