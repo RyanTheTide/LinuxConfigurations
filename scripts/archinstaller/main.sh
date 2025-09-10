@@ -14,6 +14,7 @@ trap 'log_fatal "Error $?: command '\''${BASH_COMMAND}'\'' at ${BASH_SOURCE[0]}:
 # shellcheck disable=SC2154
 main() {
 	require_root
+	detect_uefi
 	detect_virtualization
 	detect_secureboot
 	detect_cpu_manufacturer
@@ -47,6 +48,10 @@ main() {
 	configure_accounts
 	configure_shell
 	configure_dotfiles
+
+	if [[ ${is_gui} == 1 ]]; then
+		install_gui
+	fi
 
 	configure_services
 	set_refind

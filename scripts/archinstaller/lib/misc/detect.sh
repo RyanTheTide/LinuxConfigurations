@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+# Detect cpu manufacturer (Intel/AMD)
 detect_cpu_manufacturer() {
     local __var
     __var=$(lscpu | awk -F: '/Vendor ID/ {gsub(/^[ \t]+/, "", $2); print $2}')
@@ -13,7 +14,7 @@ detect_cpu_manufacturer() {
         cpu_manufacturer="unknown"
     fi
 }
-
+# Detect if installing in a virtualized environment
 detect_virtualization() {
     local __var
     __var=$(systemd-detect-virt 2>/dev/null || echo "none")
@@ -21,11 +22,13 @@ detect_virtualization() {
         is_virtualization=1
         hypervisor_type="$__var"
     else
+        # shellcheck disable=SC2034
         is_virtualization=0
+        # shellcheck disable=SC2034
         hypervisor_type="none"
     fi
 }
-
+# Detect if Secure Boot is in Setup Mode (enabled)
 detect_secureboot() {
     local __var1 __var2
     if ! command -v sbctl >/dev/null 2>&1; then
@@ -41,5 +44,12 @@ detect_secureboot() {
         fi
         return 0
     fi
+    # shellcheck disable=SC2034
     is_secureboot=0
+}
+# Detect if UEFI is enabled
+detect_uefi() {
+    if [[ ! -d /sys/firmware/efi/efivars ]]; then
+        log_fatal "UEFI not detected. This installer currently only supports UEFI systems."
+    fi
 }

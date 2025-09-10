@@ -11,8 +11,6 @@
 input_system() {
 # Locale & Keymap
     local __var1 __var2
-    is_refind=1
-
     if confirm "Are you within the USA?" ; then
         main_locale="en_US.UTF-8"
         secondary_locale=""
@@ -102,4 +100,26 @@ input_system() {
         is_microcode=0
     fi
     echo
+# Hardcode rEFInd bootmanager for now
+    # shellcheck disable=SC2034
+    bootloader="rEFInd Boot Manager"
+    # shellcheck disable=SC2034
+    is_refind=1
+# GUI
+    if confirm "Would you like to install a Graphical User Interface (GUI)?" ; then
+        if confirm "Would you like to install GNOME?" ; then
+            set_gui="gnome"
+            is_gui=1
+        elif confirm "Would you like to install KDE Plasma?" ; then
+            set_gui="kde"
+            is_gui=1
+        else
+            say "No GUI will be installed. Configure manually after installation."
+            is_gui=0
+            set_gui="none"
+        fi
+    else
+        is_gui=0
+        set_gui="none"
+    fi
 }
