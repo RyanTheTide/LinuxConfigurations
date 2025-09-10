@@ -94,7 +94,6 @@ input_system() {
     fi
     echo
 # Microcode
-    echo $is_virtualization
     if [[ ${is_virtualization:-0} -eq 0 ]]; then
         if confirm "Would you like to install CPU microcode?"; then
             is_microcode=1

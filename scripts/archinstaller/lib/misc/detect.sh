@@ -16,16 +16,27 @@ detect_cpu_manufacturer() {
 }
 # Detect if installing in a virtualized environment
 detect_virtualization() {
-    local __var
-    __var=$(systemd-detect-virt 2>/dev/null || echo "none")
-    if [[ "$__var" != "none" ]]; then
-        is_virtualization=1
-        hypervisor_type="$__var"
+    local v=""
+    if command -v systemd-detect-virt >/dev/null 2>&1; then
+        if systemd-detect-virt --quiet; then
+            # virtualization detected
+            v="$(systemd-detect-virt 2>/dev/null | tr -d '[:space:]')"
+            is_virtualization=1
+            hypervisor_type="${v:-unknown}"
+        else
+            # bare metal
+            is_virtualization=0
+            hypervisor_type="none"
+        fi
     else
-        # shellcheck disable=SC2034
-        is_virtualization=0
-        # shellcheck disable=SC2034
-        hypervisor_type="none"
+        # Fallback: look for "hypervisor" flag in cpuinfo/lscpu
+        if grep -qi hypervisor /proc/cpuinfo 2>/dev/null || lscpu 2>/dev/null | grep -qi hypervisor; then
+            is_virtualization=1
+            hypervisor_type="unknown"
+        else
+            is_virtualization=0
+            hypervisor_type="none"
+        fi
     fi
 }
 # Detect if Secure Boot is in Setup Mode (enabled)
