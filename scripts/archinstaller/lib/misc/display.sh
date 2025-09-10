@@ -1,14 +1,17 @@
 #!/usr/bin/env bash
 
 display_configuration() {
-    __var="${disk%p}"
+    __var1="${disk%p}" __var2=""
+    if [[ ${is_virtualization:-0} -eq 1 && -n ${hypervisor_type:-} && "${hypervisor_type,,}" != "none" ]]; then
+        __var2=$(printf '    Virtualization/Hypervisor: %s\n' "$hypervisor_type")
+    fi
     clear
     # shellcheck disable=SC2154
     cat <<EOF
 Current Configuration
 
 Disk Information:
-    Disk: ${__var}
+    Disk: ${__var1}
     SSD Detected: $([[ ${is_ssd} -eq 1 ]] && echo "yes" || echo "no")
 
 System Information:
@@ -21,8 +24,7 @@ System Information:
     GUI: ${set_gui}
 
 Boot Information:
-$( [[ $is_virtualization -eq 1 && "$hypervisor_type" != "none" ]] && printf '    Virtualization/Hypervisor: %s\n' "$hypervisor_type" )
-    CPU Manufacturer: ${cpu_manufacturer}
+${virt_line}    CPU Manufacturer: ${cpu_manufacturer}
     Microcode Enabled: $([[ ${is_microcode} -eq 1 ]] && echo "yes" || echo "no")
     Dual-Boot Enabled: $([[ ${no_windows} -eq 0 ]] && echo "yes" || echo "no")
     Secure Boot Enabled: $([[ ${is_secureboot} -eq 1 ]] && echo "yes" || echo "no")

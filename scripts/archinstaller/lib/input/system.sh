@@ -122,4 +122,5 @@ input_system() {
         is_gui=0
         set_gui="none"
     fi
+    echo
 }
