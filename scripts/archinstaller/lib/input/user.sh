@@ -1,15 +1,16 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2034 disable=SC2154
 
 # User input script gets various user details:
 # - newuser : new user (including password and description/full name)
 # - rootpassword : root account password
 
 input_user() {
-# New user
     local __var1 __var2 __var3 __var4
+
+    # New user
     while true; do
         ask newusername "Enter your username (e.g. user)" "user"
-        # shellcheck disable=SC2154
         if [[ "$newusername" =~ [[:space:]] ]]; then
             log_warn "Username cannot contain spaces."
             continue
@@ -18,8 +19,11 @@ input_user() {
             while true; do
                 asks __var1 "Enter new password for $newusername"
                 asks __var2 "Confirm new password for $newusername"
+                if [[ -z "$__var1" || -z "$__var2" ]]; then
+                    log_warn "Password cannot be blank. Please try again."
+                    continue
+                fi
                 if [[ "$__var1" == "$__var2" ]]; then
-                    # shellcheck disable=SC2034
                     newuserpassword="$__var1"
                     break
                 else
@@ -33,12 +37,16 @@ input_user() {
             log_warn "$newusername is invalid. Please try again."
         fi
     done
-# Root password
+
+    # Root user
     while true; do
         asks __var3 "Enter new password for root"
         asks __var4 "Confirm new password for root"
+        if [[ -z "$__var3" || -z "$__var4" ]]; then
+            log_warn "Password cannot be blank. Please try again."
+            continue
+        fi
         if [[ "$__var3" == "$__var4" ]]; then
-            # shellcheck disable=SC2034
             rootpassword="$__var3"
             break
         else

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2034
 
 # Detect cpu manufacturer (Intel/AMD)
 detect_cpu_manufacturer() {
@@ -7,10 +8,8 @@ detect_cpu_manufacturer() {
     if [[ $__var == "GenuineIntel" ]]; then
         cpu_manufacturer="intel"
     elif [[ $__var == "AuthenticAMD" ]]; then
-        # shellcheck disable=SC2034
         cpu_manufacturer="amd"
     else
-        # shellcheck disable=SC2034
         cpu_manufacturer="unknown"
     fi
 }
@@ -55,7 +54,6 @@ detect_secureboot() {
         fi
         return 0
     fi
-    # shellcheck disable=SC2034
     is_secureboot=0
 }
 # Detect if UEFI is enabled
@@ -113,4 +111,14 @@ detect_gpu_manufacturers() {
     if [[ -n "$__var1" ]]; then mgpu_manufacturer=$__var1; fi
     if [[ -n "$__var2" ]]; then sgpu_manufacturer=$__var2; fi
     if [[ -n "$__var3" ]]; then tgpu_manufacturer=$__var3; fi
+}
+# Detect if Bluetooth is present
+detect_bluetooth() {
+    local __var
+    __var=$(lsusb | grep -i 'Bluetooth' || true)
+    if [[ -n "$__var" ]]; then
+        is_bluetooth=1
+    else
+        is_bluetooth=0
+    fi
 }

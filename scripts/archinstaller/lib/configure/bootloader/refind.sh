@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2154
 
 # rEFInd configuration script sets up the rEFInd bootloader.
 
@@ -8,7 +9,6 @@ set_refind() {
 	arch-chroot /mnt refind-install > /dev/null 2>&1
 	rm -f /mnt/boot/refind_linux.conf > /dev/null 2>&1
 	touch /mnt/boot/refind_linux.conf
- 	# shellcheck disable=SC2154
  	if [[ ${is_microcode} -eq 1 ]]; then
   		cat > /mnt/boot/refind_linux.conf <<EOF
 "Standard Boot"  "root=PARTUUID=${root_uuid} rw add_efi_memmap quiet rootflags=subvol=@ initrd=@\\boot\\${cpu_manufacturer}-ucode.img initrd=@\\boot\\initramfs-linux.img"

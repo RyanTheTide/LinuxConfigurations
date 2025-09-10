@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2034 disable=SC2154
 
 # System input script gets various system settings:
 # - locale & keymap : system locale and keyboard layout
@@ -21,9 +22,7 @@ input_system() {
             ask __var1 "Enter your main locale (e.g. en_AU)" "en_AU"
             __var1="${__var1//[[:space:]]/}"
             if [[ "$__var1" =~ ^[a-z]{2}_[A-Z]{2}$ ]]; then
-                # shellcheck disable=SC2034
                 main_locale="${__var1}.UTF-8"
-                # shellcheck disable=SC2034
                 secondary_locale="en_US.UTF-8"
                 break
             else
@@ -35,7 +34,6 @@ input_system() {
             __var2="${__var2,,}"
             __var2="${__var2//[[:space:]]/}"
             if localectl list-keymaps | grep -qx -- "$__var2"; then
-                # shellcheck disable=SC2034
                 keymap="$__var2"
                 break
             else
@@ -45,10 +43,8 @@ input_system() {
     fi
 # Dual-boot mode
     if confirm "Would you like to enable dual-boot mode (Windows)?" ; then
-        # shellcheck disable=SC2034
         no_windows=0
     else
-        # shellcheck disable=SC2034
         no_windows=1
     fi
     echo
@@ -56,10 +52,8 @@ input_system() {
     if [[ ${is_secureboot:-0} -eq 1 ]]; then
         say "Secure Boot detected in Setup Mode."
         if confirm "Would you like to enable Secure Boot?"; then
-            # shellcheck disable=SC2034
             is_secureboot=1
         else
-            # shellcheck disable=SC2034
             is_secureboot=0
         fi
         echo
@@ -69,7 +63,6 @@ input_system() {
         ask timezone "Enter your timezone (e.g. Australia/Sydney)" "Australia/Sydney"
         timezone="${timezone//[[:space:]]/}"
         if [[ -e "/usr/share/zoneinfo/$timezone" ]]; then
-            # shellcheck disable=SC2034
             country="${timezone%%/*}"
             break
         else
@@ -79,7 +72,6 @@ input_system() {
 # Hostname
     while true; do
         ask hostname "Enter your hostname (e.g. ArchLinux)" "ArchLinux"
-        # shellcheck disable=SC2154
         if [[ "$hostname" =~ ^([A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)(\.([A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?))*$ ]]; then
             break
         else
@@ -111,10 +103,18 @@ input_system() {
         fi
         echo
     fi
-# Hardcode rEFInd bootmanager for now
-    # shellcheck disable=SC2034
+# Bluetooth
+    if [[ ${is_bluetooth:-0} -eq 1 ]]; then
+        if confirm "Bluetooth device detected. Would you like to install Bluetooth support?"; then
+            is_bluetooth=1
+        else
+            is_bluetooth=0
+        fi
+        echo
+    fi
+# Bootloader
+    # Hardcode rEFInd bootmanager for now
     bootloader="rEFInd Boot Manager"
-    # shellcheck disable=SC2034
     is_refind=1
 # GUI
     if confirm "Would you like to install a Graphical User Interface (GUI)?" ; then

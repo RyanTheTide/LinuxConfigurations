@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2154
 
 # Shell configuration script sets up various shell enchancements:
 # - ohmyzsh : framework for managing zsh configuration
@@ -6,7 +7,6 @@
 
 configure_shell() {
     log_info "Configuring shell..."
-    # shellcheck disable=SC2154
     arch-chroot /mnt su - "${newusername}" -s /bin/bash <<'EOL'
 set -euo pipefail
 touch "$HOME/.zshrc" > /dev/null 2>&1

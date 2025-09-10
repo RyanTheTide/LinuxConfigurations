@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2154
 
 # Partition configuration script sets up disk partitions:
 # - Creates partition layout based on disk size and Dual-boot preference
@@ -8,11 +9,9 @@
 create_partitions_layout() {
     local disksize disksize_mib __var
 	__var="${disk%p}"
-    # shellcheck disable=SC2154
     disksize=$(lsblk -bno SIZE "${__var}" | head -n1)
     disksize_mib=$((disksize / 1024 / 1024))
 	efi_end=2049
-    # shellcheck disable=SC2154
     if (( no_windows == 1 )); then
         msr_end=${efi_end}
         remain_start=${efi_end}
@@ -25,9 +24,7 @@ create_partitions_layout() {
         remain_start=${msr_end}
         remain_size=$((disksize_mib - remain_start))
         half_size=$((remain_size / 2))
-        # shellcheck disable=SC2034
         win_end=$((remain_start + half_size))
-        # shellcheck disable=SC2034
         root_idx=4
     fi
 }
@@ -35,7 +32,6 @@ create_partitions_layout() {
 # Creates partitions
 create_partitions() {
 	__var="${disk%p}"
-    # shellcheck disable=SC2154
     log_info "Creating partitions..."
 	parted -s "${__var}" mklabel gpt
 	parted -s "${__var}" mkpart primary fat32 1MiB "${efi_end}"MiB
@@ -57,7 +53,6 @@ create_partitions() {
     partprobe "$__var"
     udevadm settle
     sleep 2
-    # shellcheck disable=SC2154
     [[ -b "${disk}1" && -b "${disk}${root_idx}" ]] || log_fatal "Partitions not found!"
     log_success "Partitions created."
 }

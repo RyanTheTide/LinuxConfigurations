@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2034 disable=SC2154
 
 display_configuration() {
     local __var1="${disk%p}" virt_line="" gpu_line=""
@@ -6,7 +7,6 @@ display_configuration() {
         virt_line=$(printf '    Virtualization/Hypervisor: %s\n' "$hypervisor_type")
     fi
     clear
-    # shellcheck disable=SC2154
     cat <<EOF
 Current Configuration
 

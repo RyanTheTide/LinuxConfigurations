@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2154
 
 # Services configuration script sets up various systemd services:
 # - fstrim.timer : for SSDs (set by is_ssd variable)

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2154
 set -Eeuo pipefail
 
 # Load all library scripts
@@ -11,7 +12,6 @@ done
 
 trap 'log_fatal "Error $?: command '\''${BASH_COMMAND}'\'' at ${BASH_SOURCE[0]}:${LINENO}"' ERR
 
-# shellcheck disable=SC2154
 main() {
 	require_root
 	detect_uefi
@@ -19,6 +19,7 @@ main() {
 	detect_secureboot
 	detect_cpu_manufacturer
 	detect_gpu_manufacturers
+	detect_bluetooth
 
 	input_welcome
 	input_disk
@@ -47,6 +48,9 @@ main() {
 	fi
 	if [[ ${is_gpu} == 1 ]]; then
 		install_gpu
+	fi
+	if [[ ${is_bluetooth} == 1 ]]; then
+		install_bluetooth
 	fi
 
 	configure_accounts

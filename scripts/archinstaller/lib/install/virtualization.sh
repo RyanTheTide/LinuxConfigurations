@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2034 disable=SC2154
 
 install_virtualization_tools() {
     case "$hypervisor_type" in
