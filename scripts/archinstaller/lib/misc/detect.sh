@@ -56,7 +56,7 @@ detect_uefi() {
 # Detect gpu manufacturer (NVIDIA/AMD/Intel)
 detect_gpu_manufacturers() {
     local gpu_lines igpu_lines vendor
-    local __var1 __var2 __var3
+    local __var1="" __var2="" __var3=""
     gpu_lines=$(lspci -nn | grep "VGA compatible controller")
     gpu_count=$(echo "$gpu_lines" | wc -l)
     if (( gpu_count == 0 )); then
