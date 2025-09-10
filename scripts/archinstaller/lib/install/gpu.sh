@@ -2,19 +2,19 @@
 
 install_gpu_amd() {
     log_info "Installing AMD GPU drivers..."
-    arch-chroot /mnt pacman -S --noconfirm mesa vulkan-radeon
+    arch-chroot /mnt pacman -S --noconfirm mesa vulkan-radeon > /dev/null 2>&1
     log_success "AMD GPU drivers installed."
 }
 
 install_gpu_nvidia() {
     log_info "Installing NVIDIA GPU drivers..."
-    arch-chroot /mnt pacman -S --noconfirm nvidia-open nvidia-utils
+    arch-chroot /mnt pacman -S --noconfirm nvidia-open nvidia-utils > /dev/null 2>&1
     log_success "NVIDIA GPU drivers installed."
 }
 
 install_gpu_intel() {
     log_info "Installing Intel GPU drivers..."
-    arch-chroot /mnt pacman -S --noconfirm mesa vulkan-intel
+    arch-chroot /mnt pacman -S --noconfirm mesa vulkan-intel > /dev/null 2>&1
     log_success "Intel GPU drivers installed."
 }
 
