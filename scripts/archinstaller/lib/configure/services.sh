@@ -29,6 +29,13 @@ configure_services() {
             systemctl --root=/mnt enable qemu-guest-agent.service >/dev/null 2>&1
         fi
     fi
+    if [[ "$is_gui" == 1 ]]; then
+        if [[ "$is_gui_gnome" == 1 ]]; then
+            systemctl --root=/mnt enable gdm.service >/dev/null 2>&1
+        elif [[ "$is_gui_kde" == 1 ]]; then
+            systemctl --root=/mnt enable sddm.service >/dev/null 2>&1
+        fi
+    fi
     log_success "Services configured."
 }
 
