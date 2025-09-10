@@ -18,6 +18,7 @@ main() {
 	detect_virtualization
 	detect_secureboot
 	detect_cpu_manufacturer
+	detect_gpu_manufacturers
 
 	input_welcome
 	input_disk
@@ -43,6 +44,9 @@ main() {
 	fi
 	if [[ ${is_virtualization} == 1 ]]; then
 		install_virtualization_tools
+	fi
+	if [[ ${is_gpu} == 1 ]]; then
+		install_gpu
 	fi
 
 	configure_accounts

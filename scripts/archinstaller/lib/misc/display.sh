@@ -1,9 +1,18 @@
 #!/usr/bin/env bash
 
 display_configuration() {
-    __var1="${disk%p}" __var2=""
+    local __var1="${disk%p}" virt_line="" gpu_line=""
     if [[ ${is_virtualization:-0} -eq 1 && -n ${hypervisor_type:-} && "${hypervisor_type,,}" != "none" ]]; then
-        __var2=$(printf '    Virtualization/Hypervisor: %s\n' "$hypervisor_type")
+        virt_line=$(printf '    Virtualization/Hypervisor: %s\n' "$hypervisor_type")
+    fi
+    if [[ ${is_igpu:-0} -eq 1 && -n ${igpu_manufacturer:-} && "${igpu_manufacturer,,}" != "none" ]]; then
+        gpu_line="    iGPU Manufacturer: ${igpu_manufacturer}\n"
+    fi
+    if [[ ${is_gpu:-0} -eq 1 && -n ${mgpu_manufacturer:-} && "${mgpu_manufacturer,,}" != "none" ]]; then
+        gpu_line+="    dGPU Manufacturer(s): ${mgpu_manufacturer}"
+        [[ -n ${sgpu_manufacturer:-} && "${sgpu_manufacturer,,}" != "none" ]] && gpu_line+=", ${sgpu_manufacturer}"
+        [[ -n ${tgpu_manufacturer:-} && "${tgpu_manufacturer,,}" != "none" ]] && gpu_line+=", ${tgpu_manufacturer}"
+        gpu_line+="\n"
     fi
     clear
     # shellcheck disable=SC2154
@@ -25,7 +34,7 @@ System Information:
 
 Boot Information:
 ${virt_line}    CPU Manufacturer: ${cpu_manufacturer}
-    Microcode Enabled: $([[ ${is_microcode} -eq 1 ]] && echo "yes" || echo "no")
+${gpu_line}    Microcode Enabled: $([[ ${is_microcode} -eq 1 ]] && echo "yes" || echo "no")
     Dual-Boot Enabled: $([[ ${no_windows} -eq 0 ]] && echo "yes" || echo "no")
     Secure Boot Enabled: $([[ ${is_secureboot} -eq 1 ]] && echo "yes" || echo "no")
     Bootloader: ${bootloader}

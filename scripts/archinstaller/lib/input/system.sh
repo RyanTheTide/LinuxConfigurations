@@ -94,12 +94,23 @@ input_system() {
     fi
     echo
 # Microcode
-    if confirm "Would you like to install CPU microcode?" ; then
-        is_microcode=1
-    else
-        is_microcode=0
+    if [[ ${is_virtualization:-0} -eq 0 ]]; then
+        if confirm "Would you like to install CPU microcode?"; then
+            is_microcode=1
+        else
+            is_microcode=0
+        fi
+        echo
     fi
-    echo
+# GPU Drivers
+    if [[ ${is_gpu:-0} -eq 1 ]]; then
+        if confirm "Would you like to install GPU drivers?"; then
+            is_gpu=1
+        else
+            is_gpu=0
+        fi
+        echo
+    fi
 # Hardcode rEFInd bootmanager for now
     # shellcheck disable=SC2034
     bootloader="rEFInd Boot Manager"
